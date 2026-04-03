@@ -415,6 +415,10 @@ class AppMenu {
       if (prefs.autoSave !== undefined) {
         this.updateAutoSaveMenu(prefs.autoSave)
       }
+      if (prefs.language !== undefined) {
+        // Rebuild all menus for translation
+        this.updateAppMenu()
+      }
     })
   }
 }

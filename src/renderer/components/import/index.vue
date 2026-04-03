@@ -18,8 +18,8 @@
           <div class="img-wrapper">
             <img :src="`${importIcon.url}`" alt="import file">
           </div>
-          <div>Import or Open</div>
-          <p> Drop here to get you stuff into TouchFish Texts</p>
+          <div>{{ $t('recent.importTitle') }}</div>
+          <p>{{ $t('recent.dropHere') }}</p>
         </div>
         <div class="file-list">
           <div>.md</div>

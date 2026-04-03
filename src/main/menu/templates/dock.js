@@ -1,8 +1,9 @@
 import { app, Menu } from 'electron'
 import * as actions from '../actions/file'
+import { t } from '../../i18n'
 
 const dockMenu = Menu.buildFromTemplate([{
-  label: 'Open...',
+  get label () { return t('menu.dockOpen') },
   click (menuItem, browserWindow) {
     if (browserWindow) {
       actions.openFile(browserWindow)
@@ -11,7 +12,7 @@ const dockMenu = Menu.buildFromTemplate([{
     }
   }
 }, {
-  label: 'Clear Recent',
+  get label () { return t('menu.dockClearRecent') },
   click () {
     app.clearRecentDocuments()
   }

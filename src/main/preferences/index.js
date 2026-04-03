@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import EventEmitter from 'events'
 import Store from 'electron-store'
-import { BrowserWindow, ipcMain, nativeTheme } from 'electron'
+import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron'
 import log from 'electron-log'
 import { isWindows } from '../config'
 import { hasSameKeys } from '../utils'
@@ -41,6 +41,14 @@ class Preference extends EventEmitter {
       // Set best theme on first application start.
       if (nativeTheme.shouldUseDarkColors) {
         defaultSettings.theme = 'dark'
+      }
+
+      // Set best language on first application start based on system locale.
+      const systemLocale = app.getLocale ? app.getLocale() : 'en'
+      if (systemLocale && systemLocale.toLowerCase().startsWith('zh')) {
+        defaultSettings.language = 'zh-CN'
+      } else {
+        defaultSettings.language = 'en'
       }
     } catch (err) {
       log.error(err)

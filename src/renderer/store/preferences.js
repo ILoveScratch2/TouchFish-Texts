@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron'
 import bus from '../bus'
+import { applyLocale } from '../i18n'
 
 // user preference
 const state = {
@@ -121,6 +122,10 @@ const actions = {
 
     ipcRenderer.on('mt::user-preference', (e, preferences) => {
       commit('SET_USER_PREFERENCE', preferences)
+      // Apply locale from saved preferences (handles first load)
+      if (preferences.language) {
+        applyLocale(preferences.language)
+      }
     })
   },
 

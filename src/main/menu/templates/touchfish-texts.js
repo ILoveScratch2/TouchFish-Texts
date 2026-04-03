@@ -1,6 +1,7 @@
 import { app } from 'electron'
 import { showAboutDialog } from '../actions/help'
 import * as actions from '../actions/touchfish-texts'
+import { t } from '../../i18n'
 
 // macOS only menu.
 
@@ -8,17 +9,17 @@ export default function (keybindings) {
   return {
     label: 'TouchFish Texts',
     submenu: [{
-      label: 'About TouchFish Texts',
+      label: t('menu.about'),
       click (menuItem, focusedWindow) {
         showAboutDialog(focusedWindow)
       }
     }, {
-      label: 'Check for updates...',
+      label: t('menu.checkUpdates'),
       click (menuItem, focusedWindow) {
         actions.checkUpdates(focusedWindow)
       }
     }, {
-      label: 'Preferences',
+      label: t('menu.preferences'),
       accelerator: keybindings.getAccelerator('file.preferences'),
       click () {
         actions.userSetting()
@@ -26,32 +27,32 @@ export default function (keybindings) {
     }, {
       type: 'separator'
     }, {
-      label: 'Services',
+      label: t('menu.services'),
       role: 'services',
       submenu: []
     }, {
       type: 'separator'
     }, {
-      label: 'Hide TouchFish Texts',
+      label: t('menu.hide'),
       accelerator: keybindings.getAccelerator('mt.hide'),
       click () {
         actions.osxHide()
       }
     }, {
-      label: 'Hide Others',
+      label: t('menu.hideOthers'),
       accelerator: keybindings.getAccelerator('mt.hide-others'),
       click () {
         actions.osxHideAll()
       }
     }, {
-      label: 'Show All',
+      label: t('menu.showAll'),
       click () {
         actions.osxShowAll()
       }
     }, {
       type: 'separator'
     }, {
-      label: 'Quit TouchFish Texts',
+      label: t('menu.quitApp'),
       accelerator: keybindings.getAccelerator('file.quit'),
       click: app.quit
     }]

@@ -257,8 +257,6 @@ const backspaceCtrl = ContentState => {
 
       return this.singleRender(startBlock)
     }
-
-    // Fix: https://github.com/touchfish-texts/touchfish-texts/issues/2013
     // Also fix the codeblock crashed when the code content is '\n' and press backspace.
     if (
       startBlock.functionType === 'codeContent' &&

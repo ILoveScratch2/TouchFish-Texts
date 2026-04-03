@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/touchfish-texts/muya.git"
+    "url": "git+https://github.com/MarkText/muya.git"
   },
   "keywords": [
     "markdown",
@@ -18,7 +18,7 @@
   "author": "ransixi@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/touchfish-texts/muya/issues"
+    "url": "https://github.com/MarkText/muya/issues"
   },
-  "homepage": "https://github.com/touchfish-texts/muya#readme"
+  "homepage": "https://github.com/MarkText/muya#readme"
 }

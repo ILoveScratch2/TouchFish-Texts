@@ -23,7 +23,7 @@ const initializeLogger = appEnvironment => {
 
 // NOTE: We only support Linux, macOS and Windows but not BSD nor SunOS.
 if (!/^(darwin|win32|linux)$/i.test(process.platform)) {
-  process.stdout.write(`Operating system "${process.platform}" is not supported! Please open an issue at "https://github.com/touchfish-texts/touchfish-texts".\n`)
+  process.stdout.write(`Operating system "${process.platform}" is not supported! Please open an issue at "https://github.com/ILoveScratch2/TouchFish-Texts".\n`)
   process.exit(1)
 }
 

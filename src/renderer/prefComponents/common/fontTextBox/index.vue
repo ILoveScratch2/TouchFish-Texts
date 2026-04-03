@@ -9,7 +9,7 @@
       popper-class="font-autocomplete-popper"
       v-model="selectValue"
       :fetch-suggestions="querySearch"
-      placeholder="Select font..."
+      :placeholder="$t('fontTextBox.placeholder')"
       @select="handleSelect"
     >
       <i class="el-icon-arrow-down el-input__icon" slot="suffix"></i>

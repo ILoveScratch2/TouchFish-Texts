@@ -23,7 +23,7 @@
         </el-col>
         <el-col :span="24">
           <div class="github-link">
-            <el-button type="text" @click="openGitHub">GitHub</el-button>
+            <el-button type="text" @click="openGitHub">{{ $t('about.github') }}</el-button>
           </div>
         </el-col>
       </el-row>
@@ -38,9 +38,6 @@ import TouchFishTextsLogo from '../../assets/images/logo.png'
 
 export default {
   data () {
-    this.name = 'TouchFish Texts'
-    this.description = 'The markdown editor just you want.'
-    this.copyright = `Copyright © 2026-${new Date().getFullYear()} ILoveScratch2`
     this.logo = TouchFishTextsLogo
     return {
       showAboutDialog: false
@@ -49,7 +46,16 @@ export default {
   computed: {
     ...mapState({
       appVersion: state => state.appVersion
-    })
+    }),
+    name () {
+      return this.$t('app.title')
+    },
+    description () {
+      return this.$t('app.description')
+    },
+    copyright () {
+      return this.$t('app.copyright', { year: new Date().getFullYear() })
+    }
   },
   created () {
     bus.$on('aboutDialog', this.showDialog)

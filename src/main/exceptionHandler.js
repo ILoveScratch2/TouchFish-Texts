@@ -111,7 +111,7 @@ const setupExceptionHandler = () => {
 
   // start crashReporter to save core dumps to temporary folder
   crashReporter.start({
-    companyName: 'touchfish-texts',
+    companyName: 'touchfish',
     productName: 'touchfish-texts',
     submitURL: 'http://0.0.0.0/',
     uploadToServer: false,

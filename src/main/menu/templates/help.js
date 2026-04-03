@@ -3,6 +3,7 @@ import { shell } from 'electron'
 import { isFile } from 'common/filesystem'
 import * as actions from '../actions/help'
 import { checkUpdates } from '../actions/touchfish-texts'
+import { t } from '../../i18n'
 
 /// Check whether the package is updatable at runtime.
 const isUpdatable = () => {
@@ -29,68 +30,51 @@ const isUpdatable = () => {
 
 export default function () {
   const helpMenu = {
-    label: '&Help',
+    label: t('menu.help'),
     role: 'help',
     submenu: [{
-      label: 'Quick Start...',
+      label: t('menu.quickStart'),
       click () {
-        shell.openExternal('https://github.com/touchfish-texts/touchfish-texts/blob/master/docs/README.md')
+        shell.openExternal('https://touchfishtexts.ilovescratch.us.ci/quick-start')
       }
     }, {
-      label: 'Markdown Reference...',
+      label: t('menu.markdownReference'),
       click () {
-        shell.openExternal('https://github.com/touchfish-texts/touchfish-texts/blob/master/docs/MARKDOWN_SYNTAX.md')
+        shell.openExternal('https://touchfishtexts.ilovescratch.us.ci/markdown-syntax')
       }
     }, {
-      label: 'Changelog...',
+      label: t('menu.changelog'),
       click () {
-        shell.openExternal('https://github.com/touchfish-texts/touchfish-texts/blob/master/.github/CHANGELOG.md')
+        shell.openExternal('https://touchfishtexts.ilovescratch.us.ci/changelog')
+      }
+    }, {
+      label: t('menu.reportIssue'),
+      click () {
+        shell.openExternal('https://github.com/ILoveScratch2/TouchFish-Texts/issues')
       }
     }, {
       type: 'separator'
     }, {
-      label: 'Donate via Open Collective...',
-      click (item, win) {
-        shell.openExternal('https://opencollective.com/touchfish-texts')
-      }
-    }, {
-      label: 'Feedback via Twitter...',
-      click (item, win) {
-        actions.showTweetDialog(win, 'twitter')
-      }
-    }, {
-      label: 'Report Issue or Request Feature...',
+      label: t('menu.website'),
       click () {
-        shell.openExternal('https://github.com/touchfish-texts/touchfish-texts/issues')
+        shell.openExternal('https://touchfishtexts.ilovescratch.us.ci')
+      }
+    }, {
+      label: t('menu.watchGithub'),
+      click () {
+        shell.openExternal('https://github.com/ILoveScratch2/TouchFish-Texts')
+      }
+    }, {
+      label: t('menu.followGithub'),
+      click () {
+        shell.openExternal('https://github.com/ILoveScratch2/')
       }
     }, {
       type: 'separator'
     }, {
-      label: 'Website...',
+      label: t('menu.license'),
       click () {
-        shell.openExternal('https://github.com/touchfish-texts/touchfish-texts')
-      }
-    }, {
-      label: 'Watch on GitHub...',
-      click () {
-        shell.openExternal('https://github.com/touchfish-texts/touchfish-texts')
-      }
-    }, {
-      label: 'Follow us on Github...',
-      click () {
-        shell.openExternal('https://github.com/Jocs')
-      }
-    }, {
-      label: 'Follow us on Twitter...',
-      click () {
-        shell.openExternal('https://twitter.com/touchfish-textsapp')
-      }
-    }, {
-      type: 'separator'
-    }, {
-      label: 'License...',
-      click () {
-        shell.openExternal('https://github.com/touchfish-texts/touchfish-texts/blob/master/LICENSE')
+        shell.openExternal('https://touchfishtexts.ilovescratch.us.ci/license')
       }
     }]
   }
@@ -99,7 +83,7 @@ export default function () {
     helpMenu.submenu.push({
       type: 'separator'
     }, {
-      label: 'Check for updates...',
+      label: t('menu.checkUpdates'),
       click (menuItem, browserWindow) {
         checkUpdates(browserWindow)
       }
@@ -110,7 +94,7 @@ export default function () {
     helpMenu.submenu.push({
       type: 'separator'
     }, {
-      label: 'About TouchFish Texts...',
+      label: t('menu.aboutApp'),
       click (menuItem, browserWindow) {
         actions.showAboutDialog(browserWindow)
       }

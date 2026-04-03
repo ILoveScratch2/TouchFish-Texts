@@ -4,9 +4,11 @@ import sourceMapSupport from 'source-map-support'
 import bootstrapRenderer from './bootstrap'
 import VueRouter from 'vue-router'
 import lang from 'element-ui/lib/locale/lang/en'
+import langZhCN from 'element-ui/lib/locale/lang/zh-CN'
 import locale from 'element-ui/lib/locale'
 import axios from './axios'
 import store from './store'
+import i18n, { applyLocale } from './i18n'
 import './assets/symbolIcon'
 import {
   Dialog,
@@ -59,7 +61,26 @@ addElementStyle()
 // Be careful when changing code before this line!
 
 // Configure Vue
-locale.use(lang)
+function applyElementLocale (appLocale) {
+  if (appLocale === 'zh-CN') {
+    locale.use(langZhCN)
+  } else {
+    locale.use(lang)
+  }
+}
+
+applyElementLocale('en')
+
+// Apply locale from preferences
+store.watch(
+  state => state.preferences.language,
+  newLang => {
+    if (newLang) {
+      applyLocale(newLang)
+      applyElementLocale(newLang)
+    }
+  }
+)
 
 Vue.use(Dialog)
 Vue.use(Form)
@@ -104,5 +125,6 @@ const router = new VueRouter({
 new Vue({
   store,
   router,
+  i18n,
   template: '<router-view class="view"></router-view>'
 }).$mount('#app')

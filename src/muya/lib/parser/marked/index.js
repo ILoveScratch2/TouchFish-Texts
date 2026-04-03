@@ -21,7 +21,7 @@ function marked (src, opt = {}) {
     opt = Object.assign({}, options, opt)
     return new Parser(opt).parse(new Lexer(opt).lex(src))
   } catch (e) {
-    e.message += '\nPlease report this to https://github.com/touchfish-texts/touchfish-texts/issues.'
+    e.message += '\nPlease report this to https://github.com/ILoveScratch2/TouchFish-Texts/issues.'
     if (opt.silent) {
       return '<p>An error occurred:</p><pre>' +
         escape(e.message + '', true) +

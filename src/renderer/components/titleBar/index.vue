@@ -41,18 +41,18 @@
         <el-tooltip
           v-if="wordCount"
           class="item"
-          :content="`${wordCount[show]} ${HASH[show].full + (wordCount[show] > 1 ? 's' : '')}`"
+          :content="`${wordCount[show]} ${HASH[show].full}`"
           placement="bottom-end"
         >
           <div slot="content">
             <div class="title-item">
-              <span class="front">Words:</span><span class="text">{{wordCount['word']}}</span>
+              <span class="front">{{ $t('titleBar.words') }}:</span><span class="text">{{wordCount['word']}}</span>
             </div>
             <div class="title-item">
-              <span class="front">Characters:</span><span class="text">{{wordCount['character']}}</span>
+              <span class="front">{{ $t('titleBar.characters') }}:</span><span class="text">{{wordCount['character']}}</span>
             </div>
             <div class="title-item">
-              <span class="front">Paragraphs:</span><span class="text">{{wordCount['paragraph']}}</span>
+              <span class="front">{{ $t('titleBar.paragraphs') }}:</span><span class="text">{{wordCount['paragraph']}}</span>
             </div>
           </div>
           <div
@@ -108,24 +108,6 @@ import { isOsx } from '@/util'
 export default {
   data () {
     this.isOsx = isOsx
-    this.HASH = {
-      word: {
-        short: 'W',
-        full: 'word'
-      },
-      character: {
-        short: 'C',
-        full: 'character'
-      },
-      paragraph: {
-        short: 'P',
-        full: 'paragraph'
-      },
-      all: {
-        short: 'A',
-        full: '(with space)character'
-      }
-    }
     this.windowIconMinimize = minimizePath
     this.windowIconRestore = restorePath
     this.windowIconMaximize = maximizePath
@@ -156,6 +138,14 @@ export default {
       titleBarStyle: state => state.preferences.titleBarStyle,
       showTabBar: state => state.layout.showTabBar
     }),
+    HASH () {
+      return {
+        word: { short: this.$t('titleBar.wordShort'), full: this.$t('titleBar.wordFull') },
+        character: { short: this.$t('titleBar.characterShort'), full: this.$t('titleBar.characterFull') },
+        paragraph: { short: this.$t('titleBar.paragraphShort'), full: this.$t('titleBar.paragraphFull') },
+        all: { short: this.$t('titleBar.allShort'), full: this.$t('titleBar.allFull') }
+      }
+    },
     paths () {
       if (!this.pathname) return []
       const pathnameToken = this.pathname.split(PATH_SEPARATOR).filter(i => i)

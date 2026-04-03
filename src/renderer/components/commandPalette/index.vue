@@ -65,10 +65,9 @@ export default {
   },
   data () {
     this.currentCommand = null
-    this.defaultPlaceholderText = 'Type a command to execute'
     return {
       showCommandPalette: false,
-      placeholderText: this.defaultPlaceholderText,
+      placeholderText: '',
       query: '',
       selectedCommandIndex: -1,
       availableCommands: [],
@@ -90,7 +89,7 @@ export default {
         .then(() => {
           this.availableCommands = this.currentCommand.subcommands
           this.selectedCommandIndex = this.currentCommand.subcommandSelectedIndex
-          this.placeholderText = this.currentCommand.placeholder || this.defaultPlaceholderText
+          this.placeholderText = this.currentCommand.placeholder || this.$t('commandPalette.placeholder')
           this.query = ''
           this.showCommandPalette = true
           bus.$emit('editor-blur')

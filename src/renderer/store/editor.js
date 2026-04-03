@@ -7,6 +7,7 @@ import { hasKeys, getUniqueId } from '../util'
 import listToTree from '../util/listToTree'
 import { createDocumentState, getOptionsFromState, getSingleFileState, getBlankFileState } from './help'
 import notice from '../services/notification'
+import i18n from '../i18n'
 import {
   FileEncodingCommand,
   LineEndingCommand,
@@ -119,8 +120,8 @@ const mutations = {
       // The tab may be closed in the meanwhile.
       console.error('LOAD_CHANGE: Cannot find tab in tab list.')
       notice.notify({
-        title: 'Error loading tab',
-        message: 'There was an error while loading the file change because the tab cannot be found.',
+        title: i18n.t('editorNotifications.errorLoadingTab'),
+        message: i18n.t('editorNotifications.errorLoadingTabMsg'),
         type: 'error',
         time: 20000,
         showConfirm: false
@@ -481,7 +482,7 @@ const actions = {
       const tab = tabs.find(t => t.id === tabId)
       if (!tab) {
         notice.notify({
-          title: 'Save failure',
+          title: i18n.t('editorNotifications.saveFailure'),
           message: msg,
           type: 'error',
           time: 20000,
@@ -1072,8 +1073,8 @@ const actions = {
   LINTEN_FOR_EXPORT_SUCCESS ({ commit }) {
     ipcRenderer.on('mt::export-success', (e, { type, filePath }) => {
       notice.notify({
-        title: 'Exported successfully',
-        message: `Exported "${path.basename(filePath)}" successfully!`,
+        title: i18n.t('editorNotifications.exportSuccess'),
+        message: i18n.t('editorNotifications.exportSuccessMsg', { name: path.basename(filePath) }),
         showConfirm: true
       })
         .then(() => {

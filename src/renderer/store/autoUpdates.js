@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron'
 import notice from '../services/notification'
+import i18n from '../i18n'
 
 const state = {}
 
@@ -12,7 +13,7 @@ const actions = {
   LISTEN_FOR_UPDATE ({ commit }) {
     ipcRenderer.on('mt::UPDATE_ERROR', (e, message) => {
       notice.notify({
-        title: 'Update',
+        title: i18n.t('updates.errorTitle'),
         type: 'error',
         time: 10000,
         message
@@ -20,21 +21,21 @@ const actions = {
     })
     ipcRenderer.on('mt::UPDATE_NOT_AVAILABLE', (e, message) => {
       notice.notify({
-        title: 'Update not Available',
+        title: i18n.t('updates.notAvailable'),
         type: 'primary',
         message
       })
     })
     ipcRenderer.on('mt::UPDATE_DOWNLOADED', (e, message) => {
       notice.notify({
-        title: 'Update Downloaded',
+        title: i18n.t('updates.downloaded'),
         type: 'info',
         message
       })
     })
     ipcRenderer.on('mt::UPDATE_AVAILABLE', (e, message) => {
       notice.notify({
-        title: 'Update Available',
+        title: i18n.t('updates.available'),
         type: 'primary',
         message,
         showConfirm: true

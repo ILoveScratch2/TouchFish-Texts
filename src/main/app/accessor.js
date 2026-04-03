@@ -5,6 +5,7 @@ import Keybindings from '../keyboard/shortcutHandler'
 import AppMenu from '../menu'
 import { loadMenuCommands } from '../menu/actions'
 import { CommandManager, loadDefaultCommands } from '../commands'
+import { registerPreferences } from '../i18n'
 
 class Accessor {
   /**
@@ -17,6 +18,7 @@ class Accessor {
     this.paths = appEnvironment.paths // export paths to make it better accessible
 
     this.preferences = new Preference(this.paths)
+    registerPreferences(this.preferences)
     this.dataCenter = new DataCenter(this.paths)
 
     this.commandManager = CommandManager

@@ -623,12 +623,12 @@ const commands = [
   }, {
     id: 'docs.user-guide',
     execute: async () => {
-      shell.openExternal('https://github.com/touchfish-texts/touchfish-texts/blob/master/docs/README.md')
+      shell.openExternal('https://touchfishtexts.ilovescratch.us.ci/user-guide')
     }
   }, {
     id: 'docs.markdown-syntax',
     execute: async () => {
-      shell.openExternal('https://github.com/touchfish-texts/touchfish-texts/blob/master/docs/MARKDOWN_SYNTAX.md')
+      shell.openExternal('https://touchfishtexts.ilovescratch.us.ci/markdown-syntax')
     }
   },
 

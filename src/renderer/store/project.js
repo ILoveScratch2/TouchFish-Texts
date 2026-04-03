@@ -5,6 +5,7 @@ import bus from '../bus'
 import { create, paste, rename } from '../util/fileSystem'
 import { PATH_SEPARATOR } from '../config'
 import notice from '../services/notification'
+import i18n from '../i18n'
 import { getFileStateFromData } from './help'
 import { hasMarkdownExtension } from '../../common/filesystem/paths'
 
@@ -142,7 +143,7 @@ const actions = {
       const { pathname } = state.activeItem
       ipcRenderer.invoke('mt::fs-trash-item', pathname).catch(err => {
         notice.notify({
-          title: 'Error while deleting',
+          title: i18n.t('projectNotifications.errorDeleting'),
           type: 'error',
           message: err.message
         })
@@ -161,9 +162,9 @@ const actions = {
 
         if (path.normalize(clipboard.src) === path.normalize(clipboard.dest)) {
           notice.notify({
-            title: 'Paste Forbidden',
+            title: i18n.t('projectNotifications.pasteForbidden'),
             type: 'warning',
-            message: 'Source and destination must not be the same.'
+            message: i18n.t('projectNotifications.pasteForbiddenMsg')
           })
           return
         }
@@ -174,7 +175,7 @@ const actions = {
           })
           .catch(err => {
             notice.notify({
-              title: 'Error while pasting',
+              title: i18n.t('projectNotifications.errorPasting'),
               type: 'error',
               message: err.message
             })
@@ -206,7 +207,7 @@ const actions = {
       })
       .catch(err => {
         notice.notify({
-          title: 'Error in Side Bar',
+          title: i18n.t('projectNotifications.errorSideBar'),
           type: 'error',
           message: err.message
         })

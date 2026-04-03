@@ -1,27 +1,27 @@
 <template>
   <section class="image-folder">
-    <h5>Global or relative image folder</h5>
-    <text-box description="Global image folder" :input="imageFolderPath"
+    <h5>{{ $t('prefImage.folderTitle') }}</h5>
+    <text-box :description="$t('prefImage.globalFolder')" :input="imageFolderPath"
       :regexValidator="/^(?:$|([a-zA-Z]:)?[\/\\].*$)/" :defaultValue="folderPathPlaceholder"
       :onChange="value => modifyImageFolderPath(value)"></text-box>
     <div>
-      <el-button size="mini" @click="modifyImageFolderPath(undefined)">Open...</el-button>
-      <el-button size="mini" @click="openImageFolder">Show in Folder</el-button>
+      <el-button size="mini" @click="modifyImageFolderPath(undefined)">{{ $t('prefImage.openFolder') }}</el-button>
+      <el-button size="mini" @click="openImageFolder">{{ $t('prefImage.showInFolder') }}</el-button>
     </div>
     <compound>
       <template #head>
-        <bool description="Prefer relative assets folder"
-          more="https://github.com/touchfish-texts/touchfish-texts/blob/develop/docs/IMAGES.md"
+        <bool :description="$t('prefImage.preferRelative')"
+          more="https://touchfishtexts.ilovescratch.us.ci/image-folder-settings"
           :bool="imagePreferRelativeDirectory"
           :onChange="value => onSelectChange('imagePreferRelativeDirectory', value)"></bool>
       </template>
       <template #children>
-        <text-box description="Relative image folder name" :input="imageRelativeDirectoryName"
+        <text-box :description="$t('prefImage.relativeFolderName')" :input="imageRelativeDirectoryName"
           :regexValidator="/^(?:$|(?![a-zA-Z]:)[^\/\\].*$)/"
           :defaultValue="relativeDirectoryNamePlaceholder"
           :onChange="value => onSelectChange('imageRelativeDirectoryName', value)"></text-box>
         <div class="footnote">
-          Include <code>${filename}</code> in the text-box above to automatically insert the document file name.
+          {{ $t('prefImage.filenameHint') }}
         </div>
       </template>
     </compound>
