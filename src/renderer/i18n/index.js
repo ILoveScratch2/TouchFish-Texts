@@ -35,13 +35,24 @@ const i18n = new VueI18n({
 })
 
 /**
+ * Resolve a locale value, treating 'system' as a request to auto-detect.
+ * @param {string} locale
+ * @returns {string} a locale from SUPPORTED_LOCALES
+ */
+export function resolveLocale (locale) {
+  if (locale === 'system') {
+    return detectSystemLocale()
+  }
+  return SUPPORTED_LOCALES.includes(locale) ? locale : 'en'
+}
+
+/**
  * Apply the given locale to the i18n instance.
- * @param {string} locale - e.g. 'en' or 'zh-CN'
+ * @param {string} locale - e.g. 'en', 'zh-CN', or 'system'
  */
 export function applyLocale (locale) {
-  if (SUPPORTED_LOCALES.includes(locale)) {
-    i18n.locale = locale
-  }
+  const resolved = resolveLocale(locale)
+  i18n.locale = resolved
 }
 
 export { detectSystemLocale, SUPPORTED_LOCALES }

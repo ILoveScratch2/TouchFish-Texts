@@ -48,7 +48,7 @@ class Preference extends EventEmitter {
       if (systemLocale && systemLocale.toLowerCase().startsWith('zh')) {
         defaultSettings.language = 'zh-CN'
       } else {
-        defaultSettings.language = 'en'
+        defaultSettings.language = 'system'
       }
     } catch (err) {
       log.error(err)

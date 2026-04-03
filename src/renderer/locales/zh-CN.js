@@ -137,7 +137,7 @@ export default {
     spelling: '拼写检查',
     theme: '主题',
     image: '图片',
-    keyBindings: '键盘快捷键'
+    keybindings: '键盘快捷键'
   },
 
   // Preferences - General

@@ -59,6 +59,9 @@ export const fileSortByOptions = [{
 }]
 
 export const languageOptions = [{
+  label: 'System',
+  value: 'system'
+}, {
   label: 'English',
   value: 'en'
 }, {

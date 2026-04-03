@@ -137,7 +137,7 @@ export default {
     spelling: 'Spelling',
     theme: 'Theme',
     image: 'Image',
-    keyBindings: 'Key Bindings'
+    keybindings: 'Key Bindings'
   },
 
   // Preferences - General

@@ -70,7 +70,7 @@
   "language": {
     "description": "General--The language TouchFish Texts use.",
     "type": "string",
-    "default": "en"
+    "default": "system"
   },
   "editorFontFamily": {
     "description": "Editor--editor font family",

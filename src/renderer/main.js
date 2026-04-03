@@ -8,7 +8,7 @@ import langZhCN from 'element-ui/lib/locale/lang/zh-CN'
 import locale from 'element-ui/lib/locale'
 import axios from './axios'
 import store from './store'
-import i18n, { applyLocale } from './i18n'
+import i18n, { applyLocale, resolveLocale } from './i18n'
 import './assets/symbolIcon'
 import {
   Dialog,
@@ -62,7 +62,8 @@ addElementStyle()
 
 // Configure Vue
 function applyElementLocale (appLocale) {
-  if (appLocale === 'zh-CN') {
+  const resolved = resolveLocale(appLocale)
+  if (resolved === 'zh-CN') {
     locale.use(langZhCN)
   } else {
     locale.use(lang)
