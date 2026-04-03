@@ -40,7 +40,7 @@ export default {
   data () {
     this.name = 'TouchFish Texts'
     this.description = 'The markdown editor just you want.'
-    this.copyright = `Copyright © 2017-${new Date().getFullYear()} Luo Ran`
+    this.copyright = `Copyright © 2026-${new Date().getFullYear()} ILoveScratch2`
     this.logo = TouchFishTextsLogo
     return {
       showAboutDialog: false
