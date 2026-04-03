@@ -1,0 +1,188 @@
+name: Build
+
+on:
+  push:
+    branches: [ main, master, develop ]
+    paths-ignore:
+      - 'docs/**'
+  pull_request:
+    branches: [ main, master, develop ]
+    paths-ignore:
+      - 'docs/**'
+
+jobs:
+  unix:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: false
+    timeout-minutes: 45
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+
+    env:
+      DISPLAY: ":99.0"
+      # TOUCHFISH_TEXTS_IS_STABLE: 1
+      TOUCHFISH_TEXTS_EXIT_ON_ERROR: 1
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 16
+          check-latest: true
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Setup Python 3.11 (macOS, for node-gyp distutils)
+        if: runner.os == 'macOS'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install build dependencies
+        if: runner.os == 'Linux'
+        #                         electron-builder                 | keyboard-layout         | keytar                      | fontmanager
+        run: |
+          sudo apt-get -y update
+          sudo apt-get install -y icnsutils graphicsmagick xz-utils libx11-dev libxkbfile-dev gnome-keyring libsecret-1-dev libfontconfig-dev
+
+      - name: Cache node_modules
+        uses: actions/cache@v5
+        id: cacheNodeModules
+        with:
+          path: ${{ github.workspace }}/node_modules
+          key: ${{ runner.os }}-node_modules-cache-v1-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-cache-v1-
+
+      - name: Cache Electron
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.HOME }}/.cache/electron
+          key: ${{ runner.os }}-electron-cache-v1-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+
+      - name: Cache Electron-Builder
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.HOME }}/.cache//electron-builder
+          key: ${{ runner.os }}-electron-builder-cache-v1-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+
+      - name: Install dependencies
+        if: ${{ steps.cacheNodeModules.outputs.cache-hit != 'true' }}
+        run: yarn install --check-files --frozen-lockfile
+
+      - name: Fix Electron sandbox permissions
+        if: runner.os == 'Linux'
+        run: sudo chown root:root node_modules/electron/dist/chrome-sandbox && sudo chmod 4755 node_modules/electron/dist/chrome-sandbox
+
+      - name: Lint
+        run: |
+          yarn run lint
+
+      - name: Run unit and E2E tests
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: yarn run test
+
+      - name: Build
+        run: yarn build:bin
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ runner.os }}
+          path: build/
+          if-no-files-found: warn
+
+  windows:
+    runs-on: windows-latest
+    continue-on-error: false
+    timeout-minutes: 45
+
+    env:
+      # TOUCHFISH_TEXTS_IS_STABLE: 1
+      TOUCHFISH_TEXTS_EXIT_ON_ERROR: 1
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GYP_MSVS_VERSION: 2022
+      npm_config_msvs_version: 2022
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 16
+          check-latest: true
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Setup Python 3.11 (for node-gyp distutils)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache node_modules
+        uses: actions/cache@v5
+        id: cacheNodeModules
+        with:
+          path: ${{ github.workspace }}\node_modules
+          key: ${{ runner.os }}-node_modules-cache-v2-${{ hashFiles(format('{0}{1}', github.workspace, '\yarn.lock')) }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-cache-v2-
+
+      - name: Cache Electron
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.LOCALAPPDATA }}\electron\Cache
+          key: ${{ runner.os }}-electron-cache-v2-${{ hashFiles(format('{0}{1}', github.workspace, '\yarn.lock')) }}
+
+      - name: Cache Electron-Builder
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.LOCALAPPDATA }}\electron-builder\cache
+          key: ${{ runner.os }}-electron-builder-cache-v2-${{ hashFiles(format('{0}{1}', github.workspace, '\yarn.lock')) }}
+
+      - name: Install dependencies
+        # Windows worker fail sometimes because a module cannot be found.
+        # if: ${{ steps.cacheNodeModules.outputs.cache-hit != 'true' }}
+        # Use --ignore-scripts to skip postinstall (which runs electron-rebuild).
+        # We run postinstall manually below after upgrading node-gyp.
+        run: yarn install --check-files --frozen-lockfile --ignore-scripts
+
+      - name: Upgrade node-gyp and run postinstall
+        # node-gyp@8.4.1 (locked in yarn.lock) has a VS2022 detection bug on windows-latest.
+        # Replace it with the latest version before running electron-rebuild.
+        run: |
+          npm install --global node-gyp@latest
+          $globalPrefix = npm prefix -g
+          Remove-Item -Recurse -Force "node_modules\node-gyp"
+          Copy-Item -Recurse -Force "$globalPrefix\node_modules\node-gyp" "node_modules\"
+          node node_modules/electron/install.js
+          node .electron-vue/postinstall.js
+          yarn run rebuild
+          yarn run lint:fix
+        shell: pwsh
+
+      - name: Lint
+        run: |
+          yarn run lint
+
+      # - name: Run unit and E2E tests
+      #   run: yarn run test
+
+      - name: Build
+        run: yarn build:bin
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ runner.os }}
+          path: build/
+          if-no-files-found: warn

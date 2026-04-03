@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=TouchFish Texts
+Comment=Next generation markdown editor
+Exec=touchfish-texts %F
+Terminal=false
+Type=Application
+Icon=touchfish-texts
+Categories=Office;TextEditor;Utility;
+MimeType=text/markdown;
+Keywords=touchfish-texts;
+StartupWMClass=touchfish-texts
+Actions=NewWindow;
+
+[Desktop Action NewWindow]
+Name=New Window
+Exec=touchfish-texts --new-window %F
+Icon=touchfish-texts
