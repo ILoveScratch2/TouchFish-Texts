@@ -143,7 +143,7 @@
     "karma-electron": "^7.1.0",
     "karma-mocha": "^2.0.1",
     "karma-sourcemap-loader": "^0.3.8",
-    "karma-spec-reporter": "0.0.34",
+    "karma-spec-reporter": "0.0.36",
     "karma-webpack": "^5.0.0",
     "license-checker": "^25.0.1",
     "listr": "^0.14.3",
