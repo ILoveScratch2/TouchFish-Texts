@@ -3,44 +3,4 @@
   "extends": [
     "config:recommended"
   ]
-
-"rangeStrategy": "bump",
-
-  "packageRules": [
-    {
-      "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "all non-major dependencies",
-      "automerge": false
-    },
-
-    {
-      "matchPackageNames": ["electron"],
-      "groupName": "electron updates",
-      "automerge": false
-    },
-
-    {
-      "matchPackagePatterns": ["^@types/"],
-      "groupName": "types",
-      "automerge": false
-    },
-
-    {
-      "matchPackagePatterns": ["eslint", "prettier"],
-      "groupName": "linting",
-      "automerge": false
-    },
-
-    {
-      "matchManagers": ["github-actions"],
-      "groupName": "github actions",
-      "automerge": true
-    },
-
-    {
-      "matchUpdateTypes": ["major"],
-      "groupName": "major updates",
-      "automerge": false
-    }
-  ]
 }
