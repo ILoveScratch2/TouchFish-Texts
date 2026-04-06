@@ -39,7 +39,7 @@
     "@marktext/file-icons": "^1.0.6",
     "@octokit/rest": "^18.12.0",
     "arg": "^5.0.1",
-    "axios": "^0.26.1",
+    "axios": "^0.30.0",
     "ced": "^2.0.0",
     "chokidar": "^3.5.3",
     "codemirror": "^5.65.2",
