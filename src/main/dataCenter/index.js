@@ -1,9 +1,34 @@
 import fs from 'fs'
 import path from 'path'
 import EventEmitter from 'events'
-import { BrowserWindow, ipcMain, dialog } from 'electron'
-import keytar from 'keytar'
+import { BrowserWindow, ipcMain, dialog, safeStorage } from 'electron'
 import schema from './schema'
+
+// Replacement for the deprecated `keytar` native module.
+// Uses Electron's built-in safeStorage (OS-level encryption) to store secrets.
+const SECURE_PREFIX = '__enc__'
+
+function getSecureValue (store, key) {
+  try {
+    const stored = store.get(SECURE_PREFIX + key)
+    if (stored == null) return null
+    if (safeStorage.isEncryptionAvailable()) {
+      return safeStorage.decryptString(Buffer.from(stored, 'base64'))
+    }
+    return stored
+  } catch (err) {
+    return null
+  }
+}
+
+function setSecureValue (store, key, value) {
+  if (safeStorage.isEncryptionAvailable()) {
+    const encrypted = safeStorage.encryptString(value)
+    store.set(SECURE_PREFIX + key, encrypted.toString('base64'))
+  } else {
+    store.set(SECURE_PREFIX + key, value)
+  }
+}
 import Store from 'electron-store'
 import log from 'electron-log'
 import { ensureDirSync } from 'common/filesystem'
@@ -18,7 +43,6 @@ class DataCenter extends EventEmitter {
     const { dataCenterPath, userDataPath } = paths
     this.dataCenterPath = dataCenterPath
     this.userDataPath = userDataPath
-    this.serviceName = 'touchfish-texts'
     this.encryptKeys = ['githubToken']
     this.hasDataCenterFile = fs.existsSync(path.join(this.dataCenterPath, `./${DATA_CENTER_NAME}.json`))
     this.store = new Store({
@@ -53,12 +77,10 @@ class DataCenter extends EventEmitter {
   }
 
   async getAll () {
-    const { serviceName, encryptKeys } = this
+    const { encryptKeys } = this
     const data = this.store.store
     try {
-      const encryptData = await Promise.all(encryptKeys.map(key => {
-        return keytar.getPassword(serviceName, key)
-      }))
+      const encryptData = encryptKeys.map(key => getSecureValue(this.store, key))
       const encryptObj = encryptKeys.reduce((acc, k, i) => {
         return {
           ...acc,
@@ -108,9 +130,9 @@ class DataCenter extends EventEmitter {
    * return a promise
    */
   getItem (key) {
-    const { encryptKeys, serviceName } = this
+    const { encryptKeys } = this
     if (encryptKeys.includes(key)) {
-      return keytar.getPassword(serviceName, key)
+      return Promise.resolve(getSecureValue(this.store, key))
     } else {
       const value = this.store.get(key)
       return Promise.resolve(value)
@@ -118,16 +140,16 @@ class DataCenter extends EventEmitter {
   }
 
   async setItem (key, value) {
-    const { encryptKeys, serviceName } = this
+    const { encryptKeys } = this
     if (key === 'screenshotFolderPath') {
       ensureDirSync(value)
     }
     ipcMain.emit('broadcast-user-data-changed', { [key]: value })
     if (encryptKeys.includes(key)) {
       try {
-        return await keytar.setPassword(serviceName, key, value)
+        setSecureValue(this.store, key, value)
       } catch (err) {
-        log.error('Keytar error:', err)
+        log.error('Error saving secure value:', err)
       }
     } else {
       return this.store.set(key, value)

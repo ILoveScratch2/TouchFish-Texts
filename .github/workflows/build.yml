@@ -44,10 +44,10 @@ jobs:
 
       - name: Install build dependencies
         if: runner.os == 'Linux'
-        #                         electron-builder                 | keyboard-layout         | keytar                      | fontmanager
+        #                         electron-builder                 | keyboard-layout         | fontmanager
         run: |
           sudo apt-get -y update
-          sudo apt-get install -y icnsutils graphicsmagick xz-utils libx11-dev libxkbfile-dev gnome-keyring libsecret-1-dev libfontconfig-dev
+          sudo apt-get install -y icnsutils graphicsmagick xz-utils libx11-dev libxkbfile-dev libfontconfig-dev
 
       - name: Install dependencies
         run: yarn install --check-files --frozen-lockfile
