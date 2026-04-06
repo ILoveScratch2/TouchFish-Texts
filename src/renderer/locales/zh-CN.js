@@ -90,7 +90,8 @@ export default {
     includeTopHeading: '包含顶级标题：',
     includeTopHeadingDetail: '同时包含第一级标题。',
     tocTitle: '标题：',
-    exportButton: '导出...'
+    exportButton: '导出...',
+    pageCustom: '自定义'
   },
 
   // Sidebar - tree
@@ -240,7 +241,8 @@ export default {
     deleteWord: '删除',
     errorSwitchLanguage: '切换语言失败',
     errorRemoveWord: '删除自定义词语失败',
-    errorSave: '保存时发生意外错误。'
+    errorSave: '保存时发生意外错误。',
+    spellcheckerDisabledMsg: '无法更改语言，因为拼写检查功能已禁用。'
   },
 
   // Preferences - Image
@@ -368,6 +370,30 @@ export default {
     showInFolder: '在文件夹中显示'
   },
 
+  // Context menu - editor
+  contextMenuEditor: {
+    cut: '剪切',
+    copy: '复制',
+    paste: '粘贴',
+    copyAsMarkdown: '复制为 Markdown',
+    copyAsHtml: '复制为 HTML',
+    pasteAsPlainText: '粘贴为纯文本',
+    insertBefore: '在前面插入段落',
+    insertAfter: '在后面插入段落',
+    spelling: '拼写检查...',
+    changeLanguage: '更改语言...',
+    addToDictionary: '添加到词典',
+    editDictionary: '编辑词典...'
+  },
+
+  // Table dialog
+  tableDialog: {
+    title: '插入表格',
+    rows: '行数',
+    columns: '列数',
+    cancel: '取消'
+  },
+
   // Select options (general config)
   options: {
     titleBarCustom: '自定义',
@@ -376,7 +402,62 @@ export default {
     fileModified: '修改时间',
     fileTitle: '标题',
     langEn: 'English',
-    langZhCN: '中文（简体）'
+    langZhCN: '中文（简体）',
+    langSystem: '跟随系统'
+  },
+
+  // Option labels for Editor preferences
+  prefEditorOptions: {
+    endOfLineDefault: '默认',
+    trimAllTrailing: '删除所有尾部空行',
+    trimOneTrailing: '确保恰好一个尾部换行',
+    preserveLineEndings: '保留原文档风格',
+    doNothing: '不做任何处理',
+    textLtr: '从左到右',
+    textRtl: '从右到左'
+  },
+
+  // Option labels for Markdown preferences
+  prefMarkdownOptions: {
+    headingAtx: 'ATX 标题',
+    headingSetext: 'Setext 标题',
+    indentDocFx: 'DocFX 风格',
+    indentTab: '真实 Tab 字符',
+    indentSpace1: '单个空格',
+    indentSpace2: '两个空格',
+    indentSpace3: '三个空格',
+    indentSpace4: '四个空格',
+    sequenceHand: '手绘风格',
+    sequenceSimple: '简约'
+  },
+
+  // Option labels for Image preferences
+  prefImageOptions: {
+    actionUpload: '使用所选上传器将图片上传到云端（需在下方配置）',
+    actionFolder: '复制图片到指定的相对资源文件夹或全局本地文件夹',
+    actionPath: '保留原始位置'
+  },
+
+  // Option labels for Theme preferences
+  prefThemeOptions: {
+    autoSwitchAtStartup: '在启动时调整主题',
+    autoSwitchNever: '从不'
+  },
+
+  // Option labels for Export settings
+  exportOptions: {
+    headerFooterNone: '无',
+    headerFooterSingle: '单格',
+    headerFooterThree: '三格',
+    headerFooterStyleDefault: '默认',
+    headerFooterStyleSimple: '简约',
+    headerFooterStyleStyled: '带样式'
+  },
+
+  // File dialog labels (main process)
+  fileDialog: {
+    moveToButton: '移动到',
+    filenameLabel: '文件名：'
   },
 
   // Menu (main process)

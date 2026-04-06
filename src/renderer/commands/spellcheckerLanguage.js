@@ -1,5 +1,6 @@
 import bus from '../bus'
 import notice from '@/services/notification'
+import i18n from '@/i18n'
 import { delay } from '@/util'
 import { SpellChecker } from '@/spellchecker'
 import { getLanguageName } from '@/spellchecker/languageMap'
@@ -43,9 +44,9 @@ class SpellcheckerLanguageCommand {
       bus.$emit('switch-spellchecker-language', command.value)
     } else {
       notice.notify({
-        title: 'Spelling',
+        title: i18n.t('prefSpelling.title'),
         type: 'warning',
-        message: 'Cannot change language because spellchecker is disabled.'
+        message: i18n.t('prefSpelling.spellcheckerDisabledMsg')
       })
     }
   }

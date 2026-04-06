@@ -1,3 +1,5 @@
+import i18n from '@/i18n'
+
 export const bulletListMarkerOptions = [{
   label: '*',
   value: '*'
@@ -18,30 +20,30 @@ export const orderListDelimiterOptions = [{
 }]
 
 export const preferHeadingStyleOptions = [{
-  label: 'ATX heading',
+  get label () { return i18n.t('prefMarkdownOptions.headingAtx') },
   value: 'atx'
 }, {
-  label: 'Setext heading',
+  get label () { return i18n.t('prefMarkdownOptions.headingSetext') },
   value: 'setext'
 }]
 
 export const listIndentationOptions = [{
-  label: 'DocFX style',
+  get label () { return i18n.t('prefMarkdownOptions.indentDocFx') },
   value: 'dfm'
 }, {
-  label: 'True tab character',
+  get label () { return i18n.t('prefMarkdownOptions.indentTab') },
   value: 'tab'
 }, {
-  label: 'Single space character',
+  get label () { return i18n.t('prefMarkdownOptions.indentSpace1') },
   value: 1
 }, {
-  label: 'Two space characters',
+  get label () { return i18n.t('prefMarkdownOptions.indentSpace2') },
   value: 2
 }, {
-  label: 'Three space characters',
+  get label () { return i18n.t('prefMarkdownOptions.indentSpace3') },
   value: 3
 }, {
-  label: 'Four space characters',
+  get label () { return i18n.t('prefMarkdownOptions.indentSpace4') },
   value: 4
 }]
 
@@ -60,9 +62,9 @@ export const frontmatterTypeOptions = [{
 }]
 
 export const sequenceThemeOptions = [{
-  label: 'Hand drawn',
+  get label () { return i18n.t('prefMarkdownOptions.sequenceHand') },
   value: 'hand'
 }, {
-  label: 'Simple',
+  get label () { return i18n.t('prefMarkdownOptions.sequenceSimple') },
   value: 'simple'
 }]

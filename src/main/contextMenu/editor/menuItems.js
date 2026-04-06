@@ -1,25 +1,26 @@
 // NOTE: This are mutable fields that may change at runtime.
+import { t } from '../../i18n'
 
 export const CUT = {
-  label: 'Cut',
+  get label () { return t('contextMenuEditor.cut') },
   id: 'cutMenuItem',
   role: 'cut'
 }
 
 export const COPY = {
-  label: 'Copy',
+  get label () { return t('contextMenuEditor.copy') },
   id: 'copyMenuItem',
   role: 'copy'
 }
 
 export const PASTE = {
-  label: 'Paste',
+  get label () { return t('contextMenuEditor.paste') },
   id: 'pasteMenuItem',
   role: 'paste'
 }
 
 export const COPY_AS_MARKDOWN = {
-  label: 'Copy As Markdown',
+  get label () { return t('contextMenuEditor.copyAsMarkdown') },
   id: 'copyAsMarkdownMenuItem',
   click (menuItem, targetWindow) {
     targetWindow.webContents.send('mt::cm-copy-as-markdown')
@@ -27,7 +28,7 @@ export const COPY_AS_MARKDOWN = {
 }
 
 export const COPY_AS_HTML = {
-  label: 'Copy As Html',
+  get label () { return t('contextMenuEditor.copyAsHtml') },
   id: 'copyAsHtmlMenuItem',
   click (menuItem, targetWindow) {
     targetWindow.webContents.send('mt::cm-copy-as-html')
@@ -35,7 +36,7 @@ export const COPY_AS_HTML = {
 }
 
 export const PASTE_AS_PLAIN_TEXT = {
-  label: 'Paste as Plain Text',
+  get label () { return t('contextMenuEditor.pasteAsPlainText') },
   id: 'pasteAsPlainTextMenuItem',
   click (menuItem, targetWindow) {
     targetWindow.webContents.send('mt::cm-paste-as-plain-text')
@@ -43,7 +44,7 @@ export const PASTE_AS_PLAIN_TEXT = {
 }
 
 export const INSERT_BEFORE = {
-  label: 'Insert Paragraph Before',
+  get label () { return t('contextMenuEditor.insertBefore') },
   id: 'insertParagraphBeforeMenuItem',
   click (menuItem, targetWindow) {
     targetWindow.webContents.send('mt::cm-insert-paragraph', 'before')
@@ -51,7 +52,7 @@ export const INSERT_BEFORE = {
 }
 
 export const INSERT_AFTER = {
-  label: 'Insert Paragraph After',
+  get label () { return t('contextMenuEditor.insertAfter') },
   id: 'insertParagraphAfterMenuItem',
   click (menuItem, targetWindow) {
     targetWindow.webContents.send('mt::cm-insert-paragraph', 'after')

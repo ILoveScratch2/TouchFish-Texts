@@ -12,6 +12,7 @@ import { normalizeAndResolvePath, writeFile } from '../../filesystem'
 import { writeMarkdownFile } from '../../filesystem/markdown'
 import { getPath, getRecommendTitleFromMarkdownString } from '../../utils'
 import pandoc from '../../utils/pandoc'
+import { t } from '../../i18n'
 
 // TODO(refactor): "save" and "save as" should be moved to the editor window (editor.js) and
 // the renderer should communicate only with the editor window for file relevant stuff.
@@ -383,8 +384,8 @@ ipcMain.on('mt::rename', async (e, { id, pathname, newPathname }) => {
 ipcMain.on('mt::response-file-move-to', async (e, { id, pathname }) => {
   const win = BrowserWindow.fromWebContents(e.sender)
   const { filePath, canceled } = await dialog.showSaveDialog(win, {
-    buttonLabel: 'Move to',
-    nameFieldLabel: 'Filename:',
+    buttonLabel: t('fileDialog.moveToButton'),
+    nameFieldLabel: t('fileDialog.filenameLabel'),
     defaultPath: pathname
   })
 

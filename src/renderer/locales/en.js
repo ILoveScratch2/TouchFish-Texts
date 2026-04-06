@@ -90,7 +90,8 @@ export default {
     includeTopHeading: 'Include top heading:',
     includeTopHeadingDetail: 'Includes the first heading level too.',
     tocTitle: 'Title:',
-    exportButton: 'Export...'
+    exportButton: 'Export...',
+    pageCustom: 'Custom'
   },
 
   // Sidebar - tree
@@ -240,7 +241,8 @@ export default {
     deleteWord: 'Delete',
     errorSwitchLanguage: 'Failed to switch language',
     errorRemoveWord: 'Failed to remove custom word',
-    errorSave: 'An unexpected error occurred while saving.'
+    errorSave: 'An unexpected error occurred while saving.',
+    spellcheckerDisabledMsg: 'Cannot change language because spellchecker is disabled.'
   },
 
   // Preferences - Image
@@ -368,6 +370,30 @@ export default {
     showInFolder: 'Show in folder'
   },
 
+  // Context menu - editor
+  contextMenuEditor: {
+    cut: 'Cut',
+    copy: 'Copy',
+    paste: 'Paste',
+    copyAsMarkdown: 'Copy As Markdown',
+    copyAsHtml: 'Copy As HTML',
+    pasteAsPlainText: 'Paste as Plain Text',
+    insertBefore: 'Insert Paragraph Before',
+    insertAfter: 'Insert Paragraph After',
+    spelling: 'Spelling...',
+    changeLanguage: 'Change Language...',
+    addToDictionary: 'Add to Dictionary',
+    editDictionary: 'Edit Dictionary...'
+  },
+
+  // Table dialog
+  tableDialog: {
+    title: 'Insert Table',
+    rows: 'Rows',
+    columns: 'Columns',
+    cancel: 'Cancel'
+  },
+
   // Select options (general config)
   options: {
     titleBarCustom: 'Custom',
@@ -376,7 +402,62 @@ export default {
     fileModified: 'Modification time',
     fileTitle: 'Title',
     langEn: 'English',
-    langZhCN: '中文（简体）'
+    langZhCN: '中文（简体）',
+    langSystem: 'System'
+  },
+
+  // Option labels for Editor preferences
+  prefEditorOptions: {
+    endOfLineDefault: 'Default',
+    trimAllTrailing: 'Trim all trailing',
+    trimOneTrailing: 'Ensure exactly one trailing',
+    preserveLineEndings: 'Preserve style of original document',
+    doNothing: 'Do nothing',
+    textLtr: 'Left to Right',
+    textRtl: 'Right to Left'
+  },
+
+  // Option labels for Markdown preferences
+  prefMarkdownOptions: {
+    headingAtx: 'ATX heading',
+    headingSetext: 'Setext heading',
+    indentDocFx: 'DocFX style',
+    indentTab: 'True tab character',
+    indentSpace1: 'Single space character',
+    indentSpace2: 'Two space characters',
+    indentSpace3: 'Three space characters',
+    indentSpace4: 'Four space characters',
+    sequenceHand: 'Hand drawn',
+    sequenceSimple: 'Simple'
+  },
+
+  // Option labels for Image preferences
+  prefImageOptions: {
+    actionUpload: 'Upload image to cloud using selected uploader (must be configured below)',
+    actionFolder: 'Copy image to designated relative assets or global local folder',
+    actionPath: 'Keep original location'
+  },
+
+  // Option labels for Theme preferences
+  prefThemeOptions: {
+    autoSwitchAtStartup: 'Adjust theme at startup',
+    autoSwitchNever: 'Never'
+  },
+
+  // Option labels for Export settings
+  exportOptions: {
+    headerFooterNone: 'None',
+    headerFooterSingle: 'Single cell',
+    headerFooterThree: 'Three cells',
+    headerFooterStyleDefault: 'Default',
+    headerFooterStyleSimple: 'Simple',
+    headerFooterStyleStyled: 'Styled'
+  },
+
+  // File dialog labels (main process)
+  fileDialog: {
+    moveToButton: 'Move to',
+    filenameLabel: 'Filename:'
   },
 
   // Menu (main process)

@@ -1,4 +1,5 @@
 import { ENCODING_NAME_MAP } from 'common/encoding'
+import i18n from '@/i18n'
 
 export const tabSizeOptions = [{
   label: '1',
@@ -15,35 +16,35 @@ export const tabSizeOptions = [{
 }]
 
 export const endOfLineOptions = [{
-  label: 'Default',
+  get label () { return i18n.t('prefEditorOptions.endOfLineDefault') },
   value: 'default'
 }, {
-  label: 'Carriage return and line feed (CRLF)',
+  get label () { return i18n.t('menu.crlf') },
   value: 'crlf'
 }, {
-  label: 'Line feed (LF)',
+  get label () { return i18n.t('menu.lf') },
   value: 'lf'
 }]
 
 export const trimTrailingNewlineOptions = [{
-  label: 'Trim all trailing',
+  get label () { return i18n.t('prefEditorOptions.trimAllTrailing') },
   value: 0
 }, {
-  label: 'Ensure exactly one trailing',
+  get label () { return i18n.t('prefEditorOptions.trimOneTrailing') },
   value: 1
 }, {
-  label: 'Preserve style of original document',
+  get label () { return i18n.t('prefEditorOptions.preserveLineEndings') },
   value: 2
 }, {
-  label: 'Do nothing',
+  get label () { return i18n.t('prefEditorOptions.doNothing') },
   value: 3
 }]
 
 export const textDirectionOptions = [{
-  label: 'Left to Right',
+  get label () { return i18n.t('prefEditorOptions.textLtr') },
   value: 'ltr'
 }, {
-  label: 'Right to Left',
+  get label () { return i18n.t('prefEditorOptions.textRtl') },
   value: 'rtl'
 }]
 

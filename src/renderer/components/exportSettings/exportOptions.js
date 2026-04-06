@@ -1,3 +1,5 @@
+import i18n from '@/i18n'
+
 export const pageSizeList = [
   {
     label: 'A3 (297mm x 420mm)',
@@ -18,33 +20,33 @@ export const pageSizeList = [
     label: 'Tabloid (17" x 11")',
     value: 'Tabloid'
   }, {
-    label: 'Custom',
+    get label () { return i18n.t('exportSettings.pageCustom') },
     value: 'custom'
   }
 ]
 
 export const headerFooterTypes = [
   {
-    label: 'None',
+    get label () { return i18n.t('exportOptions.headerFooterNone') },
     value: 0
   }, {
-    label: 'Single cell',
+    get label () { return i18n.t('exportOptions.headerFooterSingle') },
     value: 1
   }, {
-    label: 'Three cells',
+    get label () { return i18n.t('exportOptions.headerFooterThree') },
     value: 2
   }
 ]
 
 export const headerFooterStyles = [
   {
-    label: 'Default',
+    get label () { return i18n.t('exportOptions.headerFooterStyleDefault') },
     value: 0
   }, {
-    label: 'Simple',
+    get label () { return i18n.t('exportOptions.headerFooterStyleSimple') },
     value: 1
   }, {
-    label: 'Styled',
+    get label () { return i18n.t('exportOptions.headerFooterStyleStyled') },
     value: 2
   }
 ]

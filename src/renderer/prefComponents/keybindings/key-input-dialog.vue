@@ -28,7 +28,7 @@
             v-show="!isKeybindingValid"
             class="invalid-keybinding"
           >
-            {{ $t('keyInput.invalid') }}
+            {{ $t('keyInput.cannotBeBound') }}
           </div>
         </div>
       </div>

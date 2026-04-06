@@ -371,8 +371,8 @@ const actions = {
 
   SHOW_IMAGE_DELETION_URL ({ commit }, deletionUrl) {
     notice.notify({
-      title: 'Image deletion URL',
-      message: `Click to copy the deletion URL of the uploaded image to the clipboard (${deletionUrl}).`,
+      title: i18n.t('editorNotifications.imageDeletionUrl'),
+      message: i18n.t('editorNotifications.imageDeletionUrlMsg', { url: deletionUrl }),
       showConfirm: true,
       time: 20000
     })
@@ -1073,8 +1073,8 @@ const actions = {
   LINTEN_FOR_EXPORT_SUCCESS ({ commit }) {
     ipcRenderer.on('mt::export-success', (e, { type, filePath }) => {
       notice.notify({
-        title: i18n.t('editorNotifications.exportSuccess'),
-        message: i18n.t('editorNotifications.exportSuccessMsg', { name: path.basename(filePath) }),
+        title: i18n.t('editorNotifications.exportedSuccessfully'),
+        message: i18n.t('editorNotifications.exportedSuccessfullyMsg', { filename: path.basename(filePath) }),
         showConfirm: true
       })
         .then(() => {

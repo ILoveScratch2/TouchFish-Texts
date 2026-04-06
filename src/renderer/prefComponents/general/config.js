@@ -1,8 +1,10 @@
+import i18n from '@/i18n'
+
 export const titleBarStyleOptions = [{
-  label: 'Custom',
+  get label () { return i18n.t('options.titleBarCustom') },
   value: 'custom'
 }, {
-  label: 'Native',
+  get label () { return i18n.t('options.titleBarNative') },
   value: 'native'
 }]
 
@@ -48,23 +50,23 @@ export const zoomOptions = [{
 }]
 
 export const fileSortByOptions = [{
-  label: 'Creation time',
+  get label () { return i18n.t('options.fileCreated') },
   value: 'created'
 }, {
-  label: 'Modification time',
+  get label () { return i18n.t('options.fileModified') },
   value: 'modified'
 }, {
-  label: 'Title',
+  get label () { return i18n.t('options.fileTitle') },
   value: 'title'
 }]
 
 export const languageOptions = [{
-  label: 'System',
+  get label () { return i18n.t('options.langSystem') },
   value: 'system'
 }, {
-  label: 'English',
+  get label () { return i18n.t('options.langEn') },
   value: 'en'
 }, {
-  label: '中文（简体）',
+  get label () { return i18n.t('options.langZhCN') },
   value: 'zh-CN'
 }]

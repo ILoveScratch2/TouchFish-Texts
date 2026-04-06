@@ -1,10 +1,12 @@
+import i18n from '@/i18n'
+
 export const imageActions = [{
-  label: 'Upload image to cloud using selected uploader (must be configured below)',
+  get label () { return i18n.t('prefImageOptions.actionUpload') },
   value: 'upload'
 }, {
-  label: 'Copy image to designated relative assets or global local folder',
+  get label () { return i18n.t('prefImageOptions.actionFolder') },
   value: 'folder'
 }, {
-  label: 'Keep original location',
+  get label () { return i18n.t('prefImageOptions.actionPath') },
   value: 'path'
 }]

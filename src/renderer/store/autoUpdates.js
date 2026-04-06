@@ -21,21 +21,21 @@ const actions = {
     })
     ipcRenderer.on('mt::UPDATE_NOT_AVAILABLE', (e, message) => {
       notice.notify({
-        title: i18n.t('updates.notAvailable'),
+        title: i18n.t('updates.notAvailableTitle'),
         type: 'primary',
         message
       })
     })
     ipcRenderer.on('mt::UPDATE_DOWNLOADED', (e, message) => {
       notice.notify({
-        title: i18n.t('updates.downloaded'),
+        title: i18n.t('updates.downloadedTitle'),
         type: 'info',
         message
       })
     })
     ipcRenderer.on('mt::UPDATE_AVAILABLE', (e, message) => {
       notice.notify({
-        title: i18n.t('updates.available'),
+        title: i18n.t('updates.availableTitle'),
         type: 'primary',
         message,
         showConfirm: true
