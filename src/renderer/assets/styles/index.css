@@ -5,19 +5,19 @@
 
   /*editor*/
   /*Theme color cluster*/
-  --themeColor: rgba(33, 181, 111, 1);
-  --themeColor90: rgba(33, 181, 111, .9);
-  --themeColor80: rgba(33, 181, 111, .8);
-  --themeColor70: rgba(33, 181, 111, .7);
-  --themeColor60: rgba(33, 181, 111, .6);
-  --themeColor50: rgba(33, 181, 111, .5);
-  --themeColor40: rgba(33, 181, 111, .4);
-  --themeColor30: rgba(33, 181, 111, .3);
-  --themeColor20: rgba(33, 181, 111, .2);
-  --themeColor10: rgba(33, 181, 111, .1);
+  --themeColor: rgba(64, 158, 255, 1);
+  --themeColor90: rgba(64, 158, 255, .9);
+  --themeColor80: rgba(64, 158, 255, .8);
+  --themeColor70: rgba(64, 158, 255, .7);
+  --themeColor60: rgba(64, 158, 255, .6);
+  --themeColor50: rgba(64, 158, 255, .5);
+  --themeColor40: rgba(64, 158, 255, .4);
+  --themeColor30: rgba(64, 158, 255, .3);
+  --themeColor20: rgba(64, 158, 255, .2);
+  --themeColor10: rgba(64, 158, 255, .1);
   --highlightThemeColor: var(--themeColor);
 
-  --highlightColor: rgba(33, 181, 111, .4);
+  --highlightColor: rgba(64, 158, 255, .4);
   --selectionColor: rgba(0, 0, 0, .1);
   --editorColor: rgba(0, 0, 0, .7);
   --editorColor80: rgba(0, 0, 0, .8);
