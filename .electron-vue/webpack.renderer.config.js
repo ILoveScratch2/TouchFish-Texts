@@ -4,6 +4,7 @@ process.env.BABEL_ENV = 'renderer'
 
 const path = require('path')
 const webpack = require('webpack')
+const TerserPlugin = require('terser-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -253,6 +254,14 @@ if (isProduction) {
   rendererConfig.devtool = 'nosources-source-map'
   rendererConfig.mode = 'production'
   rendererConfig.optimization.minimize = true
+  rendererConfig.optimization.minimizer = [
+    new TerserPlugin({
+      terserOptions: {
+        ecma: 2020,
+        module: true
+      }
+    })
+  ]
 
   rendererConfig.plugins.push(
     new webpack.DefinePlugin({
