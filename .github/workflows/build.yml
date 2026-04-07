@@ -33,7 +33,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 22
           check-latest: true
 
       - name: Setup Python 3.11 (macOS, for node-gyp distutils)
@@ -94,7 +94,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 22
           check-latest: true
 
       - name: Setup Python 3.11 (for node-gyp distutils)
