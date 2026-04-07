@@ -105,8 +105,8 @@ class Preference extends EventEmitter {
   }
 
   setItem (key, value) {
+    this.store.set(key, value)
     ipcMain.emit('broadcast-preferences-changed', { [key]: value })
-    return this.store.set(key, value)
   }
 
   getItem (key) {

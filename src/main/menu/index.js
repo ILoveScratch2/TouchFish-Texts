@@ -418,6 +418,15 @@ class AppMenu {
       if (prefs.language !== undefined) {
         // Rebuild all menus for translation
         this.updateAppMenu()
+        // Rebuild settings menus (macOS only) and apply if currently active
+        this.windowMenus.forEach((value, key) => {
+          if (value.type !== MenuType.SETTINGS) return
+          const rebuilt = this._buildSettingMenu()
+          value.menu = rebuilt.menu
+          if (this.activeWindowId === key) {
+            this._setApplicationMenu(rebuilt.menu)
+          }
+        })
       }
     })
   }
