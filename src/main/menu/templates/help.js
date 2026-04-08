@@ -76,6 +76,15 @@ export default function () {
       click () {
         shell.openExternal('https://touchfishtexts.ilovescratch.us.ci/license')
       }
+    }, {
+      type: 'separator'
+    }, {
+      label: t('menu.openDevTools'),
+      click (menuItem, browserWindow) {
+        if (browserWindow && browserWindow.webContents) {
+          browserWindow.webContents.openDevTools()
+        }
+      }
     }]
   }
 

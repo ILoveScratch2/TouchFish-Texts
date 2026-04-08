@@ -574,6 +574,7 @@ export default {
     watchGithub: 'Watch on GitHub...',
     followGithub: 'Follow us on Github...',
     license: 'License...',
+    openDevTools: 'Open Developer Tools',
 
     // macOS app menu
     about: 'About TouchFish Texts',
