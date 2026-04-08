@@ -189,9 +189,12 @@ const rendererConfig = {
         : false
     }),
     new webpack.DefinePlugin(getRendererEnvironmentDefinitions()),
-    // Polyfill esbuild's __name helper used by mermaid v11+
-    new webpack.ProvidePlugin({
-      __name: [path.resolve(__dirname, 'esbuildShim.js'), '__name']
+    // Polyfill esbuild's __name helper used by mermaid v11+ (webpack doesn't resolve
+    // imported bindings inside class static blocks, so we set it on globalThis as a fallback)
+    new webpack.BannerPlugin({
+      banner: 'if(typeof globalThis.__name==="undefined"){globalThis.__name=function(t,v){return Object.defineProperty(t,"name",{value:v,configurable:true})}}',
+      raw: true,
+      entryOnly: false
     }),
     // Use node http request instead axios's XHR adapter.
     new webpack.NormalModuleReplacementPlugin(
