@@ -189,6 +189,10 @@ const rendererConfig = {
         : false
     }),
     new webpack.DefinePlugin(getRendererEnvironmentDefinitions()),
+    // Polyfill esbuild's __name helper used by mermaid v11+
+    new webpack.ProvidePlugin({
+      __name: [path.resolve(__dirname, 'esbuildShim.js'), '__name']
+    }),
     // Use node http request instead axios's XHR adapter.
     new webpack.NormalModuleReplacementPlugin(
       /.+[\/\\]node_modules[\/\\]axios[\/\\]lib[\/\\]adapters[\/\\]xhr\.js$/,
