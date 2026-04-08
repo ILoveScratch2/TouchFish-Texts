@@ -574,6 +574,7 @@ export default {
     watchGithub: '在 GitHub 上关注...',
     followGithub: '在 Github 上关注我们...',
     license: '许可证...',
+    openDevTools: '打开调试工具',
 
     // macOS app menu
     about: '关于 TouchFish Texts',
