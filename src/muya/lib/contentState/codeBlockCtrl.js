@@ -59,7 +59,9 @@ const codeBlockCtrl = ContentState => {
     // Prevent possible XSS on language input when using lang attribute later on. The input is also sanitized before rendering.
     lang = escapeHTML(lang)
     if (lang !== '') {
-      loadLanguage(lang)
+      loadLanguage(lang).then(() => {
+        this.partialRender()
+      }).catch(() => {})
     }
 
     if (block.functionType === 'languageInput') {
@@ -119,7 +121,9 @@ const codeBlockCtrl = ContentState => {
       })
 
       if (language) {
-        loadLanguage(language)
+        loadLanguage(language).then(() => {
+          this.partialRender()
+        }).catch(() => {})
       }
 
       block.type = 'pre'

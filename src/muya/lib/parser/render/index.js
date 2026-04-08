@@ -99,6 +99,7 @@ class StateRender {
     if (this.mermaidCache.size) {
       const mermaid = await loadRenderer('mermaid')
       mermaid.initialize({
+        startOnLoad: false,
         securityLevel: 'strict',
         theme: this.muya.options.mermaidTheme
       })
@@ -109,9 +110,10 @@ class StateRender {
           continue
         }
         try {
-          mermaid.parse(code)
-          target.innerHTML = sanitize(code, PREVIEW_DOMPURIFY_CONFIG, true)
-          mermaid.init(undefined, target)
+          await mermaid.parse(code)
+          const renderId = 'mermaid-' + key.slice(1)
+          const { svg } = await mermaid.render(renderId, code)
+          target.innerHTML = sanitize(svg, PREVIEW_DOMPURIFY_CONFIG, true)
         } catch (err) {
           target.innerHTML = '< Invalid Mermaid Codes >'
           target.classList.add(CLASS_OR_ID.AG_MATH_ERROR)

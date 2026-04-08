@@ -6,13 +6,18 @@ import ulyssesTheme from '../assets/themes/ulysses.theme.css'
 
 import darkPrismTheme from '../assets/themes/prismjs/dark.theme.css'
 import oneDarkPrismTheme from '../assets/themes/prismjs/one-dark.theme.css'
+import lightPrismTheme from 'muya/themes/prismjs/light.theme.css'
+
+export const light = () => {
+  return lightPrismTheme
+}
 
 export const dark = () => {
   return darkTheme + '\n' + darkPrismTheme
 }
 
 export const graphite = () => {
-  return graphiteTheme
+  return graphiteTheme + '\n' + lightPrismTheme
 }
 
 export const materialDark = () => {
@@ -24,5 +29,5 @@ export const oneDark = () => {
 }
 
 export const ulysses = () => {
-  return ulyssesTheme
+  return ulyssesTheme + '\n' + lightPrismTheme
 }

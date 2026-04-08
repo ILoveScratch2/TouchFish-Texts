@@ -2,6 +2,10 @@ import fs from 'fs'
 import path from 'path'
 import EventEmitter from 'events'
 import { BrowserWindow, ipcMain, dialog, safeStorage } from 'electron'
+import Store from 'electron-store'
+import log from 'electron-log'
+import { ensureDirSync } from 'common/filesystem'
+import { IMAGE_EXTENSIONS } from 'common/filesystem/paths'
 import schema from './schema'
 
 // Replacement for the deprecated `keytar` native module.
@@ -29,10 +33,6 @@ function setSecureValue (store, key, value) {
     store.set(SECURE_PREFIX + key, value)
   }
 }
-import Store from 'electron-store'
-import log from 'electron-log'
-import { ensureDirSync } from 'common/filesystem'
-import { IMAGE_EXTENSIONS } from 'common/filesystem/paths'
 
 const DATA_CENTER_NAME = 'dataCenter'
 
