@@ -113,7 +113,7 @@ class StateRender {
           await mermaid.parse(code)
           const renderId = 'mermaid-' + key.slice(1)
           const { svg } = await mermaid.render(renderId, code)
-          target.innerHTML = sanitize(svg, PREVIEW_DOMPURIFY_CONFIG, true)
+          target.innerHTML = sanitize(svg, PREVIEW_DOMPURIFY_CONFIG, false)
         } catch (err) {
           target.innerHTML = '< Invalid Mermaid Codes >'
           target.classList.add(CLASS_OR_ID.AG_MATH_ERROR)
