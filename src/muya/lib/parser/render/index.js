@@ -1,6 +1,11 @@
 import loadRenderer from '../../renderers'
 import { CLASS_OR_ID, PREVIEW_DOMPURIFY_CONFIG } from '../../config'
 import { conflict, mixins, camelToSnake, sanitize } from '../../utils'
+
+const MERMAID_DOMPURIFY_CONFIG = {
+  ...PREVIEW_DOMPURIFY_CONFIG,
+  FORBID_ATTR: PREVIEW_DOMPURIFY_CONFIG.FORBID_ATTR.filter(a => a !== 'style')
+}
 import { patch, toVNode, toHTML, h } from './snabbdom'
 import { beginRules } from '../rules'
 import renderInlines from './renderInlines'
@@ -113,7 +118,7 @@ class StateRender {
           await mermaid.parse(code)
           const renderId = 'mermaid-' + key.slice(1)
           const { svg } = await mermaid.render(renderId, code)
-          target.innerHTML = sanitize(svg, PREVIEW_DOMPURIFY_CONFIG, false)
+          target.innerHTML = sanitize(svg, MERMAID_DOMPURIFY_CONFIG, false)
         } catch (err) {
           target.innerHTML = '< Invalid Mermaid Codes >'
           target.classList.add(CLASS_OR_ID.AG_MATH_ERROR)
