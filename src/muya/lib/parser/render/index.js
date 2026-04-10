@@ -4,7 +4,8 @@ import { conflict, mixins, camelToSnake, sanitize } from '../../utils'
 
 const MERMAID_DOMPURIFY_CONFIG = {
   ...PREVIEW_DOMPURIFY_CONFIG,
-  FORBID_ATTR: PREVIEW_DOMPURIFY_CONFIG.FORBID_ATTR.filter(a => a !== 'style')
+  FORBID_ATTR: PREVIEW_DOMPURIFY_CONFIG.FORBID_ATTR.filter(a => a !== 'style'),
+  ADD_TAGS: ['foreignObject']
 }
 import { patch, toVNode, toHTML, h } from './snabbdom'
 import { beginRules } from '../rules'
@@ -105,7 +106,7 @@ class StateRender {
       const mermaid = await loadRenderer('mermaid')
       mermaid.initialize({
         startOnLoad: false,
-        securityLevel: 'antiscript',
+        securityLevel: 'loose',
         theme: this.muya.options.mermaidTheme
       })
       for (const [key, value] of this.mermaidCache.entries()) {
