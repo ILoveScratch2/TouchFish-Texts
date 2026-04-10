@@ -9375,9 +9375,9 @@ nanomatch@^1.2.1:
     to-regex "^3.0.1"
 
 native-keymap@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/native-keymap/-/native-keymap-3.3.0.tgz#927ca6afcf4ebd986b5dc1bddfab4270e750915d"
-  integrity sha512-nvhI1Cdr+ywhpqqGdM+JM8EjMYA1s6SW8EqhWNKtffHU07JcTKDhd8N3o0TLSFn8y2YuRFoOwfAIzdTU6TVhDA==
+  version "3.3.9"
+  resolved "https://registry.yarnpkg.com/native-keymap/-/native-keymap-3.3.9.tgz#e8b60e1c2e9c5f68748bcb54305041abbf3e5662"
+  integrity sha512-d/ydQ5x+GM5W0dyAjFPwexhtc9CDH1g/xWZESS5CXk16ThyFzSBLvlBJq1+FyzUIFf/F2g1MaHdOpa6G9150YQ==
 
 natural-compare@^1.4.0:
   version "1.4.0"
