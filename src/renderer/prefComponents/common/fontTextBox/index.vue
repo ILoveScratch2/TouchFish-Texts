@@ -1,7 +1,7 @@
 <template>
   <section class="pref-font-input-item" :class="{'ag-underdevelop': disable}">
     <div class="description">
-      <span>{{description}}:</span>
+      <span v-html="md(description) + ':'" ></span>
       <i class="el-icon-info" v-if="more" @click="handleMoreClick"></i>
     </div>
     <el-autocomplete
@@ -22,6 +22,7 @@
 
 <script>
 import { shell } from 'electron'
+import markdownMixin from '../markdownMixin'
 
 // Example of fontmanager-redux objects:
 // {
@@ -46,6 +47,7 @@ import { shell } from 'electron'
 // }
 
 export default {
+  mixins: [markdownMixin],
   data () {
     this.defaultValue = this.value
     return {

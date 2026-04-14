@@ -1,7 +1,7 @@
 <template>
   <section class="pref-switch-item" :class="{'ag-underdevelop': disable}">
     <div class="description">
-      <span>{{description}}:</span>
+      <span v-html="md(description) + ':'" ></span>
       <i class="el-icon-info" v-if="more"
         @click="handleMoreClick"
       ></i>
@@ -14,9 +14,7 @@
       >
         <i class="el-icon-info"></i>
       </el-tooltip>
-      <span v-if="notes" class="notes">
-        {{notes}}
-      </span>
+      <span v-if="notes" class="notes" v-html="md(notes)"></span>
     </div>
     <el-switch
       v-model="status"
@@ -27,8 +25,10 @@
 
 <script>
 import { shell } from 'electron'
+import markdownMixin from '../markdownMixin'
 
 export default {
+  mixins: [markdownMixin],
   data () {
     return {
       status: this.bool

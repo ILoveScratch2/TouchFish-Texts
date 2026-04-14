@@ -20,9 +20,7 @@
           :regexValidator="/^(?:$|(?![a-zA-Z]:)[^\/\\].*$)/"
           :defaultValue="relativeDirectoryNamePlaceholder"
           :onChange="value => onSelectChange('imageRelativeDirectoryName', value)"></text-box>
-        <div class="footnote">
-          {{ $t('prefImage.filenameHint') }}
-        </div>
+        <div class="footnote" v-html="md($t('prefImage.filenameHint'))"></div>
       </template>
     </compound>
   </section>
@@ -31,11 +29,13 @@
 <script>
 import { mapState } from 'vuex'
 import { shell } from 'electron'
+import markdownMixin from '@/prefComponents/common/markdownMixin'
 import Bool from '@/prefComponents/common/bool'
 import Compound from '@/prefComponents/common/compound'
 import TextBox from '@/prefComponents/common/textBox'
 
 export default {
+  mixins: [markdownMixin],
   components: {
     Bool,
     Compound,

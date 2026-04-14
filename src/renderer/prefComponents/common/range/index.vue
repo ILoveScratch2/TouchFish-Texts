@@ -1,7 +1,7 @@
 <template>
   <section class="pref-range-item" :class="{'ag-underdevelop': disable}">
     <div class="description">
-      <span>{{description}}:</span> <span class="value" v-if="selectValue">{{selectValue}} <span v-if="unit">{{unit}}</span></span>
+      <span v-html="md(description) + ':'" ></span> <span class="value" v-if="selectValue">{{selectValue}} <span v-if="unit">{{unit}}</span></span>
       <i class="el-icon-info" v-if="more"
         @click="handleMoreClick"
       ></i>
@@ -19,8 +19,10 @@
 
 <script>
 import { shell } from 'electron'
+import markdownMixin from '../markdownMixin'
 
 export default {
+  mixins: [markdownMixin],
   data () {
     return {
       selectValue: this.value

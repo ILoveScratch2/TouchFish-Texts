@@ -1,7 +1,7 @@
 <template>
   <section class="pref-text-box-item" :class="{'ag-underdevelop': disable}">
     <div class="description">
-      <span>{{description}}:</span>
+      <span v-html="md(description) + ':'" ></span>
       <i class="el-icon-info" v-if="more"
         @click="handleMoreClick"
       ></i>
@@ -15,16 +15,16 @@
       size="small"
       clearable>
     </el-input>
-    <div v-if="notes" class="notes">
-      {{notes}}
-    </div>
+    <div v-if="notes" class="notes" v-html="md(notes)"></div>
   </section>
 </template>
 
 <script>
 import { shell } from 'electron'
+import markdownMixin from '../markdownMixin'
 
 export default {
+  mixins: [markdownMixin],
   data () {
     this.inputTimer = null
     return {
