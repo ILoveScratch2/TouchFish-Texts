@@ -407,5 +407,22 @@
     "description": "Watcher--Whether to use polling. Polling may leads to high CPU utilization but is necessary to watch files over a network.",
     "type": "boolean",
     "default": false
+  },
+  "_folderSettings": {
+    "description": "Folder Settings--These can be placed in a `marktext.json` file in the root of any opened folder to override global settings for that folder only. Supported variables for `imageRelativeDirectoryName` and `imageFolderPath`: ${filename} or ${fileBasenameNoExtension} (file name without extension), ${fileWorkspaceFolder} (the opened folder path), ${relativeFileDirname} (current file directory relative to project root). Example: { \"theme\": \"one-dark\", \"imageInsertAction\": \"folder\", \"imagePreferRelativeDirectory\": true, \"imageRelativeDirectoryName\": \"${fileWorkspaceFolder}/images/${relativeFileDirname}/${fileBasenameNoExtension}\" }",
+    "type": "object",
+    "properties": {
+      "theme": { "type": "string" },
+      "imageInsertAction": { "enum": ["upload", "folder", "path"] },
+      "imagePreferRelativeDirectory": { "type": "boolean" },
+      "imageRelativeDirectoryName": { "type": "string" },
+      "imageFolderPath": { "type": "string" },
+      "autoSave": { "type": "boolean" },
+      "fontSize": { "type": "number", "minimum": 12, "maximum": 32 },
+      "lineHeight": { "type": "number", "minimum": 1.2, "maximum": 2 },
+      "codeBlockLineNumbers": { "type": "boolean" },
+      "tabSize": { "type": "number" },
+      "preferHeadingStyle": { "enum": ["atx", "setext"] }
+    }
   }
 }

@@ -1,3 +1,4 @@
+import fs from 'fs'
 import path from 'path'
 import { BrowserWindow, dialog, ipcMain } from 'electron'
 import { enable as remoteEnable } from '@electron/remote/main'
@@ -23,6 +24,7 @@ class EditorWindow extends BaseWindow {
     this._directoryToOpen = null
     this._filesToOpen = [] // {doc: IMarkdownDocumentRaw, options: any, selected: boolean}
     this._markdownToOpen = [] // List of markdown strings or an empty string will open a new untitled tab
+    this._folderSettings = null // Folder-level settings from marktext.json
 
     // Root directory and file list that are currently opened. These lists are
     // used to find the best window to open new files in.
@@ -317,8 +319,10 @@ class EditorWindow extends BaseWindow {
 
       appMenu.addRecentlyUsedDocument(pathname)
       this._openedRootDirectory = pathname
+      // Read folder-level settings from marktext.json
+      this._folderSettings = this._readFolderSettings(pathname)
       ipcMain.emit('watcher-watch-directory', browserWindow, pathname)
-      browserWindow.webContents.send('mt::open-directory', pathname)
+      browserWindow.webContents.send('mt::open-directory', pathname, this._folderSettings)
     } else {
       this._directoryToOpen = pathname
     }
@@ -406,6 +410,7 @@ class EditorWindow extends BaseWindow {
     this._directoryToOpen = ''
     this._filesToOpen = []
     this._markdownToOpen = []
+    this._folderSettings = null
     this._openedRootDirectory = ''
     this._openedFiles = []
 
@@ -434,6 +439,7 @@ class EditorWindow extends BaseWindow {
     // Watchers are freed from WindowManager.
 
     this._directoryToOpen = null
+    this._folderSettings = null
     this._filesToOpen = null
     this._markdownToOpen = null
     this._openedRootDirectory = null
@@ -445,6 +451,32 @@ class EditorWindow extends BaseWindow {
   }
 
   // --- private ---------------------------------
+
+  /**
+   * Read folder-level settings from marktext.json in the given directory.
+   *
+   * @param {string} dirPath The root directory path.
+   * @returns {Object|null} The folder settings or null.
+   */
+  _readFolderSettings (dirPath) {
+    const configPath = path.join(dirPath, 'marktext.json')
+    try {
+      if (!fs.existsSync(configPath)) {
+        return null
+      }
+      const raw = fs.readFileSync(configPath, 'utf-8')
+      const settings = JSON.parse(raw)
+      // Validate that the result is a plain object
+      if (!settings || typeof settings !== 'object' || Array.isArray(settings)) {
+        log.warn(`[Folder Settings] ${configPath} is not a valid JSON object, ignoring.`)
+        return null
+      }
+      return settings
+    } catch (err) {
+      log.warn(`[Folder Settings] Failed to read ${configPath}:`, err.message)
+      return null
+    }
+  }
 
   /**
    * Open a new new tab from the markdown document.

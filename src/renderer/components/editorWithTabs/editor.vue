@@ -159,6 +159,7 @@ export default {
       imagePreferRelativeDirectory: state => state.preferences.imagePreferRelativeDirectory,
       imageRelativeDirectoryName: state => state.preferences.imageRelativeDirectoryName,
       imageFolderPath: state => state.preferences.imageFolderPath,
+      folderSettings: state => state.project.folderSettings,
       theme: state => state.preferences.theme,
       sequenceTheme: state => state.preferences.sequenceTheme,
       hideScrollbar: state => state.preferences.hideScrollbar,
@@ -195,6 +196,16 @@ export default {
   },
 
   watch: {
+    folderSettings: function (value) {
+      if (value && value.theme && this.editor) {
+        if (/dark/i.test(value.theme)) {
+          this.editor.setOptions({ mermaidTheme: 'dark', vegaTheme: 'dark' }, true)
+        } else {
+          this.editor.setOptions({ mermaidTheme: 'default', vegaTheme: 'latimes' }, true)
+        }
+      }
+    },
+
     typewriter: function (value) {
       if (value) {
         this.scrollToCursor()
@@ -683,41 +694,71 @@ export default {
 
     async imageAction (image, id, alt = '') {
       // TODO(Refactor): Refactor this method.
-      const {
-        imageInsertAction,
-        imageFolderPath,
-        imagePreferRelativeDirectory,
-        imageRelativeDirectoryName,
-        preferences
-      } = this
+      const { preferences } = this
       const {
         filename,
         pathname
       } = this.currentFile
 
-      // Save an image relative to the file if the relative image directory include the filename variable.
-      // The image is save relative to the root folder without a variable.
+      // Get effective settings: folder settings override global preferences
+      const folderSettings = this.$store.state.project.folderSettings || {}
+      const imageInsertAction = folderSettings.imageInsertAction != null
+        ? folderSettings.imageInsertAction
+        : this.imageInsertAction
+      const imagePreferRelativeDirectory = folderSettings.imagePreferRelativeDirectory != null
+        ? folderSettings.imagePreferRelativeDirectory
+        : this.imagePreferRelativeDirectory
+      const imageRelativeDirectoryName = folderSettings.imageRelativeDirectoryName != null
+        ? folderSettings.imageRelativeDirectoryName
+        : this.imageRelativeDirectoryName
+      const imageFolderPath = folderSettings.imageFolderPath != null
+        ? folderSettings.imageFolderPath
+        : this.imageFolderPath
+
       const saveRelativeToFile = () => {
         return /\${filename}/.test(imageRelativeDirectoryName)
       }
 
-      // Figure out the current working directory.
       const isTabSavedOnDisk = !!pathname
       let relativeBasePath = isTabSavedOnDisk ? path.dirname(pathname) : null
       if (isTabSavedOnDisk && !saveRelativeToFile() && this.projectTree) {
         const { pathname: rootPath } = this.projectTree
         if (rootPath && isChildOfDirectory(rootPath, pathname)) {
-          // Save assets relative to root directory.
           relativeBasePath = rootPath
         }
       }
 
+      /**
+       * Replace path variables in the image directory setting.
+       * Supported variables:
+       *   ${filename}                 - file basename without extension
+       *   ${fileBasenameNoExtension}  - same as ${filename} (VSCode compatible)
+       *   ${fileWorkspaceFolder}      - opened project/root directory path
+       *   ${relativeFileDirname}      - current file dir relative to project root
+       */
       const getResolvedImagePath = imagePath => {
-        const replacement = isTabSavedOnDisk
-          // Filename w/o extension
+        if (!imagePath) return imagePath
+
+        const fileBasenameNoExtension = isTabSavedOnDisk
           ? filename.replace(/\.[^/.]+$/, '')
           : ''
-        return imagePath.replace(/\${filename}/g, replacement)
+
+        const fileWorkspaceFolder = (this.projectTree && this.projectTree.pathname)
+          ? this.projectTree.pathname
+          : ''
+
+        let relativeFileDirname = ''
+        if (isTabSavedOnDisk && fileWorkspaceFolder) {
+          const dir = path.dirname(pathname)
+          const rel = path.relative(fileWorkspaceFolder, dir)
+          relativeFileDirname = rel || ''
+        }
+
+        return imagePath
+          .replace(/\$\{fileWorkspaceFolder\}/g, fileWorkspaceFolder)
+          .replace(/\$\{relativeFileDirname\}/g, relativeFileDirname)
+          .replace(/\$\{fileBasenameNoExtension\}/g, fileBasenameNoExtension)
+          .replace(/\$\{filename\}/g, fileBasenameNoExtension)
       }
 
       const resolvedImageFolderPath = getResolvedImagePath(imageFolderPath)

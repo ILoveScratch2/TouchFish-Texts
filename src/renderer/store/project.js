@@ -16,7 +16,9 @@ const state = {
   newFileNameCache: '',
   renameCache: null,
   clipboard: null,
-  projectTree: null
+  projectTree: null,
+  // Folder-level settings from marktext.json in the opened root directory
+  folderSettings: null
 }
 
 const getters = {}
@@ -66,6 +68,9 @@ const mutations = {
   SET_CLIPBOARD (state, data) {
     state.clipboard = data
   },
+  SET_FOLDER_SETTINGS (state, settings) {
+    state.folderSettings = settings
+  },
   CREATE_PATH (state, cache) {
     state.createCache = cache
   },
@@ -76,8 +81,9 @@ const mutations = {
 
 const actions = {
   LISTEN_FOR_LOAD_PROJECT ({ commit, dispatch }) {
-    ipcRenderer.on('mt::open-directory', (e, pathname) => {
+    ipcRenderer.on('mt::open-directory', (e, pathname, folderSettings) => {
       commit('SET_ROOT_DIRECTORY', pathname)
+      commit('SET_FOLDER_SETTINGS', folderSettings || null)
       commit('SET_LAYOUT', {
         rightColumn: 'files',
         showSideBar: true,
