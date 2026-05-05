@@ -3,6 +3,8 @@ import { escapeHTML } from '../utils'
 // import resizeCodeBlockLineNumber from '../utils/resizeCodeLineNumber'
 import selection from '../selection'
 
+const CONTAINER_BLOCK_LANGS = /^(mermaid|flowchart|sequence|plantuml|vega-lite)$/
+
 const CODE_UPDATE_REP = /^`{3,}(.*)/
 
 const codeBlockCtrl = ContentState => {
@@ -66,23 +68,40 @@ const codeBlockCtrl = ContentState => {
 
     if (block.functionType === 'languageInput') {
       const preBlock = this.getParent(block)
-      const nextSibling = this.getNextSibling(block)
+      const codeBlock = this.getNextSibling(block)
 
-      // Only update code language if necessary
-      if (block.text !== lang || preBlock.text !== lang || nextSibling.text !== lang) {
-        block.text = lang
-        preBlock.lang = lang
-        preBlock.functionType = 'fencecode'
-        nextSibling.lang = lang
-        nextSibling.children.forEach(c => (c.lang = lang))
-      }
+      if (CONTAINER_BLOCK_LANGS.test(lang)) {
+        // Convert the regular fenced code block into a diagram container block
+        const codeContent = codeBlock.children.map(c => c.text).join('\n')
+        const containerBlock = this.createContainerBlock(lang, codeContent)
+        this.insertAfter(containerBlock, preBlock)
+        this.removeBlock(preBlock)
 
-      // Set cursor at the first line
-      const { key } = nextSibling.children[0]
-      const offset = 0
-      this.cursor = {
-        start: { key, offset },
-        end: { key, offset }
+        // Set cursor at the first line of the new container's code area
+        const cursorBlock = containerBlock.children[0].children[0].children[0]
+        const { key } = cursorBlock
+        const offset = 0
+        this.cursor = {
+          start: { key, offset },
+          end: { key, offset }
+        }
+      } else {
+        // Only update code language if necessary
+        if (block.text !== lang || preBlock.lang !== lang || codeBlock.lang !== lang) {
+          block.text = lang
+          preBlock.lang = lang
+          preBlock.functionType = 'fencecode'
+          codeBlock.lang = lang
+          codeBlock.children.forEach(c => (c.lang = lang))
+        }
+
+        // Set cursor at the first line
+        const { key } = codeBlock.children[0]
+        const offset = 0
+        this.cursor = {
+          start: { key, offset },
+          end: { key, offset }
+        }
       }
     } else {
       block.text = block.text.replace(/^(`+)([^`]+$)/g, `$1${lang}`)
@@ -107,6 +126,23 @@ const codeBlockCtrl = ContentState => {
     const match = CODE_UPDATE_REP.exec(text)
     if (match || lang) {
       const language = lang || (match ? match[1] : '')
+
+      if (CONTAINER_BLOCK_LANGS.test(language)) {
+        // Convert paragraph to a diagram container block (mermaid, flowchart, etc.)
+        const containerBlock = this.createContainerBlock(language, code)
+        this.insertAfter(containerBlock, block)
+        this.removeBlock(block)
+
+        const cursorBlock = containerBlock.children[0].children[0].children[0]
+        const { key } = cursorBlock
+        const offset = 0
+        this.cursor = {
+          start: { key, offset },
+          end: { key, offset }
+        }
+        return true
+      }
+
       const codeBlock = this.createBlock('code', {
         lang: language
       })
