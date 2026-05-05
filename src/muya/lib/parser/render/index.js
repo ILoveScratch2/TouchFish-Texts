@@ -116,9 +116,14 @@ class StateRender {
         if (!target) {
           continue
         }
+        const renderId = 'mermaid-' + key.slice(1)
         try {
-          await mermaid.parse(code)
-          const renderId = 'mermaid-' + key.slice(1)
+          // Remove any pre-existing element with the same id to avoid conflicts
+          // when the same block is re-rendered (mermaid v10+)
+          const existingEl = document.getElementById(renderId)
+          if (existingEl) {
+            existingEl.remove()
+          }
           const { svg } = await mermaid.render(renderId, code)
           target.innerHTML = runSanitize(svg, MERMAID_DOMPURIFY_CONFIG)
         } catch (err) {

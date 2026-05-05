@@ -476,15 +476,30 @@ class Selection {
           count += textLength
         }
       }
+      // offset exceeds all children's text content; clamp to end of last valid child
+      for (let j = len - 1; j >= 0; j--) {
+        const lastChild = childNodes[j]
+        if (lastChild.classList && lastChild.classList.contains(CLASS_OR_ID.AG_FRONT_ICON)) {
+          continue
+        }
+        const lastChildText = getTextContent(lastChild, [CLASS_OR_ID.AG_MATH_RENDER, CLASS_OR_ID.AG_RUBY_RENDER])
+        return getNodeAndOffset(lastChild, lastChildText.length)
+      }
       return { node, offset }
     }
 
     let { node: anchorNode, offset: anchorOffset } = getNodeAndOffset(anchorParagraph, anchor.offset)
     let { node: focusNode, offset: focusOffset } = getNodeAndOffset(focusParagraph, focus.offset)
 
-    if (anchorNode.nodeType === 3 || anchorNode.nodeType === 1 && !anchorNode.classList.contains('ag-image-container')) {
+    if (anchorNode.nodeType === 3) {
       anchorOffset = Math.min(anchorOffset, anchorNode.textContent.length)
+    } else if (anchorNode.nodeType === 1 && !anchorNode.classList.contains('ag-image-container')) {
+      anchorOffset = Math.min(anchorOffset, anchorNode.childNodes.length)
+    }
+    if (focusNode.nodeType === 3) {
       focusOffset = Math.min(focusOffset, focusNode.textContent.length)
+    } else if (focusNode.nodeType === 1 && !focusNode.classList.contains('ag-image-container')) {
+      focusOffset = Math.min(focusOffset, focusNode.childNodes.length)
     }
 
     // First set the anchor node and anchor offset, make it collapsed
