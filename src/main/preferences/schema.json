@@ -409,7 +409,7 @@
     "default": false
   },
   "_folderSettings": {
-    "description": "Folder Settings--These can be placed in a `marktext.json` file in the root of any opened folder to override global settings for that folder only. Supported variables for `imageRelativeDirectoryName` and `imageFolderPath`: ${filename} or ${fileBasenameNoExtension} (file name without extension), ${fileWorkspaceFolder} (the opened folder path), ${relativeFileDirname} (current file directory relative to project root). Example: { \"theme\": \"one-dark\", \"imageInsertAction\": \"folder\", \"imagePreferRelativeDirectory\": true, \"imageRelativeDirectoryName\": \"${fileWorkspaceFolder}/images/${relativeFileDirname}/${fileBasenameNoExtension}\" }",
+    "description": "Folder Settings--These can be placed in a `tftexts.json` file in the root of any opened folder to override global settings for that folder only. Supported variables for `imageRelativeDirectoryName` and `imageFolderPath`: ${filename} or ${fileBasenameNoExtension} (file name without extension), ${fileWorkspaceFolder} (the opened folder path), ${relativeFileDirname} (current file directory relative to project root). Example: { \"theme\": \"one-dark\", \"imageInsertAction\": \"folder\", \"imagePreferRelativeDirectory\": true, \"imageRelativeDirectoryName\": \"${fileWorkspaceFolder}/images/${relativeFileDirname}/${fileBasenameNoExtension}\" }",
     "type": "object",
     "properties": {
       "theme": { "type": "string" },

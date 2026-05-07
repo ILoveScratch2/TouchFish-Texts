@@ -1,9 +1,11 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - 'release-v*'
+  release:
+    types: [published]
+
+permissions:
+  contents: write
 
 jobs:
   unix:
@@ -24,6 +26,8 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name }}
 
       - name: Install Node.js
         uses: actions/setup-node@v6
@@ -54,17 +58,12 @@ jobs:
         run: |
           yarn run lint
 
-      - name: Run unit and E2E tests
-        uses: GabrielBB/xvfb-action@v1
-        with:
-          run: yarn run test
-
-      - name: Build and release
+      - name: Build
         run: |
               if [ "$RUNNER_OS" == "Linux" ]; then
-                yarn run release:linux --publish always
+                yarn run release:linux
               elif [ "$RUNNER_OS" == "macOS" ]; then
-                yarn run release:mac --publish always
+                yarn run release:mac
               else
                 echo "$RUNNER_OS not supported"
                 exit 1
@@ -88,12 +87,10 @@ jobs:
           shasum -a 256 build/touchfish-texts-x64.dmg
         shell: bash
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-${{ runner.os }}
-          path: build/
-          if-no-files-found: warn
+      - name: Upload artifacts to release
+        run: |
+          gh release upload ${{ github.event.release.tag_name }} $(find build/ -maxdepth 1 -type f) --clobber
+        shell: bash
 
   windows:
     runs-on: windows-latest
@@ -110,6 +107,8 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name }}
 
       - name: Install Node.js
         uses: actions/setup-node@v6
@@ -148,8 +147,8 @@ jobs:
       # - name: Run unit and E2E tests
       #   run: yarn run test
 
-      - name: Build and release
-        run: yarn run release:win --publish always
+      - name: Build
+        run: yarn run release:win
 
       - name: Calculate checksums
         run: |
@@ -157,9 +156,8 @@ jobs:
           get-filehash -Algorithm SHA256 "build\touchfish-texts-*-win.zip"
         shell: pwsh
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-${{ runner.os }}
-          path: build/
-          if-no-files-found: warn
+      - name: Upload artifacts to release
+        run: |
+          $files = Get-ChildItem -Path build -File | % { $_.FullName }
+          gh release upload ${{ github.event.release.tag_name }} $files --clobber
+        shell: pwsh

@@ -24,7 +24,7 @@ class EditorWindow extends BaseWindow {
     this._directoryToOpen = null
     this._filesToOpen = [] // {doc: IMarkdownDocumentRaw, options: any, selected: boolean}
     this._markdownToOpen = [] // List of markdown strings or an empty string will open a new untitled tab
-    this._folderSettings = null // Folder-level settings from marktext.json
+    this._folderSettings = null // Folder-level settings from tftexts.json
 
     // Root directory and file list that are currently opened. These lists are
     // used to find the best window to open new files in.
@@ -319,7 +319,7 @@ class EditorWindow extends BaseWindow {
 
       appMenu.addRecentlyUsedDocument(pathname)
       this._openedRootDirectory = pathname
-      // Read folder-level settings from marktext.json
+      // Read folder-level settings from tftexts.json
       this._folderSettings = this._readFolderSettings(pathname)
       ipcMain.emit('watcher-watch-directory', browserWindow, pathname)
       browserWindow.webContents.send('mt::open-directory', pathname, this._folderSettings)
@@ -453,13 +453,13 @@ class EditorWindow extends BaseWindow {
   // --- private ---------------------------------
 
   /**
-   * Read folder-level settings from marktext.json in the given directory.
+   * Read folder-level settings from tftexts.json in the given directory.
    *
    * @param {string} dirPath The root directory path.
    * @returns {Object|null} The folder settings or null.
    */
   _readFolderSettings (dirPath) {
-    const configPath = path.join(dirPath, 'marktext.json')
+    const configPath = path.join(dirPath, 'tftexts.json')
     try {
       if (!fs.existsSync(configPath)) {
         return null

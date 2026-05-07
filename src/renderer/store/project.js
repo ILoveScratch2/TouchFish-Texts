@@ -17,7 +17,7 @@ const state = {
   renameCache: null,
   clipboard: null,
   projectTree: null,
-  // Folder-level settings from marktext.json in the opened root directory
+  // Folder-level settings from tftexts.json in the opened root directory
   folderSettings: null
 }
 
