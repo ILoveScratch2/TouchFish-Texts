@@ -34,6 +34,7 @@ export default {
   computed: {
     ...mapState({
       theme: state => state.preferences.theme,
+      customThemes: state => state.preferences.customThemes,
       titleBarStyle: state => state.preferences.titleBarStyle
     }),
     showCustomTitleBar () {
@@ -43,14 +44,14 @@ export default {
   watch: {
     theme: function (value, oldValue) {
       if (value !== oldValue) {
-        addThemeStyle(value)
+        addThemeStyle(value, this.customThemes)
       }
     }
   },
   created () {
     this.$nextTick(() => {
       const state = global.touchFishTexts.initialState || DEFAULT_STYLE
-      addThemeStyle(state.theme)
+      addThemeStyle(state.theme, this.customThemes)
 
       this.$store.dispatch('ASK_FOR_USER_PREFERENCE')
       this.hideLoadingPage()

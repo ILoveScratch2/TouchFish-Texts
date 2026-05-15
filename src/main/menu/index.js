@@ -412,6 +412,9 @@ class AppMenu {
       if (prefs.theme !== undefined) {
         this.updateThemeMenu(prefs.theme)
       }
+      if (prefs.customThemes !== undefined) {
+        this.updateAppMenu()
+      }
       if (prefs.autoSave !== undefined) {
         this.updateAutoSaveMenu(prefs.autoSave)
       }

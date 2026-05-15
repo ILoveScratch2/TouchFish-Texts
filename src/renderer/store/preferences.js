@@ -56,6 +56,7 @@ const state = {
 
   theme: 'light',
   autoSwitchTheme: 2,
+  customThemes: [],
 
   spellcheckerEnabled: false,
   spellcheckerNoUnderline: false,
@@ -167,6 +168,14 @@ const actions = {
   DISPATCH_EDITOR_VIEW_STATE (_, viewState) {
     const { windowId } = global.touchFishTexts.env
     ipcRenderer.send('mt::view-layout-changed', windowId, viewState)
+  },
+
+  IMPORT_CUSTOM_THEME ({ commit }) {
+    ipcRenderer.send('mt::import-custom-theme')
+  },
+
+  REMOVE_CUSTOM_THEME ({ commit }, themeName) {
+    ipcRenderer.send('mt::remove-custom-theme', themeName)
   }
 }
 

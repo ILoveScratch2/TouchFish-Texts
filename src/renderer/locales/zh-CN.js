@@ -222,7 +222,9 @@ export default {
     openThemeFolder: '打开主题文件夹',
     openFolder: '打开文件夹',
     importTheme: '导入自定义主题',
-    importThemeButton: '导入主题'
+    importThemeButton: '导入主题',
+    removeTheme: '删除主题',
+    customTag: '(自定义)'
   },
 
   // Preferences - Spellchecker

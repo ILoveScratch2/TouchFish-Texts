@@ -222,7 +222,9 @@ export default {
     openThemeFolder: 'Open the themes folder',
     openFolder: 'Open Folder',
     importTheme: 'Import custom themes',
-    importThemeButton: 'Import Theme'
+    importThemeButton: 'Import Theme',
+    removeTheme: 'Remove theme',
+    customTag: '(custom)'
   },
 
   // Preferences - Spellchecker

@@ -75,6 +75,7 @@ export default {
       showTabBar: state => state.layout.showTabBar,
       sourceCode: state => state.preferences.sourceCode,
       theme: state => state.preferences.theme,
+      customThemes: state => state.preferences.customThemes,
       textDirection: state => state.preferences.textDirection
     }),
     ...mapState({
@@ -99,7 +100,7 @@ export default {
   watch: {
     theme: function (value, oldValue) {
       if (value !== oldValue) {
-        addThemeStyle(value)
+        addThemeStyle(value, this.customThemes)
       }
     },
     zoom: function (zoom) {
@@ -188,7 +189,7 @@ export default {
 
     this.$nextTick(() => {
       const style = global.touchFishTexts.initialState || DEFAULT_STYLE
-      addStyles(style)
+      addStyles({ ...style, customThemes: this.customThemes })
       this.hideLoadingPage()
     })
   }

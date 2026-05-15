@@ -324,6 +324,19 @@
       2
     ]
   },
+  "customThemes": {
+    "description": "Theme--User-imported custom themes",
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "css": { "type": "string" }
+      },
+      "required": ["name", "css"]
+    },
+    "default": []
+  },
   "spellcheckerEnabled": {
     "description": "Spelling--Whether spell checking is enabled.",
     "type": "boolean",

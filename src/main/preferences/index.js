@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import EventEmitter from 'events'
 import Store from 'electron-store'
-import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain, nativeTheme } from 'electron'
 import log from 'electron-log'
 import { isWindows } from '../config'
 import { hasSameKeys } from '../utils'
@@ -159,6 +159,55 @@ class Preference extends EventEmitter {
 
     ipcMain.on('set-user-preference', settings => {
       this.setItems(settings)
+    })
+
+    ipcMain.on('mt::import-custom-theme', async e => {
+      const win = BrowserWindow.fromWebContents(e.sender)
+      const { filePaths, canceled } = await dialog.showOpenDialog(win, {
+        title: 'Import Theme',
+        filters: [{ name: 'CSS Theme Files', extensions: ['css'] }],
+        properties: ['openFile', 'multiSelections']
+      })
+      if (canceled || !filePaths || filePaths.length === 0) return
+      try {
+        const builtInNames = new Set(['light', 'dark', 'graphite', 'material-dark', 'ulysses', 'one-dark'])
+        const customThemes = this.getItem('customThemes') || []
+        const imported = []
+        for (const fp of filePaths) {
+          const basename = path.basename(fp, '.css')
+          const themeName = basename.replace(/\s+/g, '-').toLowerCase()
+          if (builtInNames.has(themeName)) {
+            log.warn(`Theme name "${themeName}" conflicts with a built-in theme, skipping`)
+            continue
+          }
+          const css = fs.readFileSync(fp, { encoding: 'utf8' })
+          if (!/:root\s*\{/.test(css)) {
+            log.warn(`Imported theme CSS "${fp}" does not contain :root selector, skipping`)
+            continue
+          }
+          const existing = customThemes.findIndex(t => t.name === themeName)
+          if (existing >= 0) {
+            customThemes[existing].css = css
+          } else {
+            customThemes.push({ name: themeName, css })
+          }
+          imported.push(themeName)
+        }
+        if (imported.length > 0) {
+          this.setItem('customThemes', customThemes)
+          win.webContents.send('mt::custom-themes-imported', imported)
+        }
+      } catch (err) {
+        log.error('Failed to import custom theme:', err)
+      }
+    })
+
+    ipcMain.on('mt::remove-custom-theme', (e, themeName) => {
+      const customThemes = this.getItem('customThemes') || []
+      const filtered = customThemes.filter(t => t.name !== themeName)
+      if (filtered.length !== customThemes.length) {
+        this.setItem('customThemes', filtered)
+      }
     })
   }
 }

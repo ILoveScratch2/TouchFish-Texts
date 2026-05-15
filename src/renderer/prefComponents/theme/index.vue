@@ -3,10 +3,12 @@
     <h4>{{ $t('prefTheme.title') }}</h4>
     <section class="offcial-themes">
       <div v-for="t of themes" :key="t.name" class="theme"
-        :class="[t.name, { 'active': t.name === theme }]"
+        :class="[t.custom ? 'custom-theme' : t.name, { 'active': t.name === theme }]"
+        :ref="t.name"
         @click="onSelectChange('theme', t.name)"
       >
         <div v-html="t.html"></div>
+        <span v-if="t.custom" class="remove-btn" :title="$t('prefTheme.removeTheme')" @click.stop="removeTheme(t.name)">&times;</span>
       </div>
     </section>
     <separator></separator>
@@ -16,16 +18,11 @@
       :options="autoSwitchThemeOptions"
       :onChange="value => onSelectChange('autoSwitchTheme', value)"
     ></cur-select>
-    <separator v-show="false"></separator>
-    <section v-show="false" class="import-themes ag-underdevelop">
-      <div>
-        <span>{{ $t('prefTheme.openThemeFolder') }}</span>
-        <el-button size="small">{{ $t('prefTheme.openFolder') }}</el-button>
-      </div>
-
+    <separator></separator>
+    <section class="import-themes">
       <div>
         <span>{{ $t('prefTheme.importTheme') }}</span>
-        <el-button size="small">{{ $t('prefTheme.importThemeButton') }}</el-button>
+        <el-button size="small" @click="importTheme">{{ $t('prefTheme.importThemeButton') }}</el-button>
       </div>
     </section>
   </div>
@@ -34,7 +31,7 @@
 <script>
 import { mapState } from 'vuex'
 import themeMd from './theme.md'
-import { autoSwitchThemeOptions, themes } from './config'
+import { getAllThemes, autoSwitchThemeOptions } from './config'
 import markdownToHtml from '@/util/markdownToHtml'
 import CurSelect from '../common/select'
 import Separator from '../common/separator'
@@ -53,26 +50,71 @@ export default {
   computed: {
     ...mapState({
       autoSwitchTheme: state => state.preferences.autoSwitchTheme,
-      theme: state => state.preferences.theme
+      theme: state => state.preferences.theme,
+      customThemes: state => state.preferences.customThemes
     })
   },
+  watch: {
+    customThemes () {
+      this.renderThemes()
+    }
+  },
   created () {
-    this.$nextTick(async () => {
-      const newThemes = []
-      for (const theme of themes) {
-        const html = await markdownToHtml(themeMd.replace(/{theme}/, theme.name))
-        newThemes.push({
-          name: theme.name,
-          html
-        })
-      }
-
-      this.themes = newThemes
+    this.renderThemes()
+    this.$nextTick(() => {
+      this.listenForImports()
     })
   },
   methods: {
+    async renderThemes () {
+      const allThemes = getAllThemes(this.customThemes)
+      const newThemes = []
+      for (const theme of allThemes) {
+        const markdown = theme.custom
+          ? themeMd.replace(/{theme}/, theme.name + ' ' + this.$t('prefTheme.customTag'))
+          : themeMd.replace(/{theme}/, theme.name)
+        const html = await markdownToHtml(markdown)
+        newThemes.push({
+          name: theme.name,
+          custom: theme.custom || false,
+          html
+        })
+      }
+      this.themes = newThemes
+
+      // Inject custom theme CSS for preview cards
+      this.$nextTick(() => {
+        for (const ct of (this.customThemes || [])) {
+          const el = this.$refs[ct.name]
+          if (!el || !el[0]) continue
+          let styleEl = el[0].querySelector('.custom-preview-style')
+          if (!styleEl) {
+            styleEl = document.createElement('style')
+            styleEl.className = 'custom-preview-style'
+            styleEl.innerHTML = ct.css
+            el[0].appendChild(styleEl)
+          }
+        }
+      })
+    },
     onSelectChange (type, value) {
       this.$store.dispatch('SET_SINGLE_PREFERENCE', { type, value })
+    },
+    importTheme () {
+      this.$store.dispatch('IMPORT_CUSTOM_THEME')
+    },
+    removeTheme (name) {
+      if (this.theme === name) {
+        this.onSelectChange('theme', 'light')
+      }
+      this.$store.dispatch('REMOVE_CUSTOM_THEME', name)
+    },
+    listenForImports () {
+      const { ipcRenderer } = require('electron')
+      ipcRenderer.on('mt::custom-themes-imported', () => {
+        // Refresh preferences to get updated customThemes
+        this.$store.dispatch('ASK_FOR_USER_PREFERENCE')
+      })
     }
   }
 }
@@ -95,6 +137,28 @@ export default {
       box-sizing: border-box;
       box-shadow: 0 9px 28px -9px rgba(0, 0, 0, .4);
       border-radius: 5px;
+      position: relative;
+      &.custom-theme {
+        color: var(--editorColor);
+        background: var(--editorBgColor);
+      }
+      & .remove-btn {
+        position: absolute;
+        top: 4px;
+        right: 8px;
+        cursor: pointer;
+        font-size: 18px;
+        opacity: 0;
+        transition: opacity .2s;
+        color: var(--editorColor);
+        line-height: 1;
+        &:hover {
+          color: #f56c6c;
+        }
+      }
+      &:hover .remove-btn {
+        opacity: .7;
+      }
       &.dark {
         color: rgba(255, 255, 255, .7);
         background: #282828;

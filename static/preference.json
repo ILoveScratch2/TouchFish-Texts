@@ -51,6 +51,7 @@
 
   "theme": "light",
   "autoSwitchTheme": 2,
+  "customThemes": [],
 
   "spellcheckerEnabled": false,
   "spellcheckerNoUnderline": false,

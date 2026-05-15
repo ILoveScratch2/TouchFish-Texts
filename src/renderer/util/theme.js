@@ -46,10 +46,10 @@ const getThemeCluster = themeColor => {
   return clusters
 }
 
-export const addThemeStyle = theme => {
+export const addThemeStyle = (theme, customThemes = []) => {
   const isCmRailscasts = railscastsThemes.includes(theme)
   const isCmOneDark = oneDarkThemes.includes(theme)
-  const isDarkTheme = isCmOneDark || isCmRailscasts
+  const isDarkTheme = isCmOneDark || isCmRailscasts || /dark/i.test(theme)
   let themeStyleEle = document.querySelector(`#${THEME_STYLE_ID}`)
   if (!themeStyleEle) {
     themeStyleEle = document.createElement('style')
@@ -57,28 +57,35 @@ export const addThemeStyle = theme => {
     document.head.appendChild(themeStyleEle)
   }
 
-  switch (theme) {
-    case 'light':
-      themeStyleEle.innerHTML = patchTheme(light())
-      break
-    case 'dark':
-      themeStyleEle.innerHTML = patchTheme(dark())
-      break
-    case 'material-dark':
-      themeStyleEle.innerHTML = patchTheme(materialDark())
-      break
-    case 'ulysses':
-      themeStyleEle.innerHTML = patchTheme(ulysses())
-      break
-    case 'graphite':
-      themeStyleEle.innerHTML = patchTheme(graphite())
-      break
-    case 'one-dark':
-      themeStyleEle.innerHTML = patchTheme(oneDark())
-      break
-    default:
-      console.log('unknown theme')
-      break
+  // Check for custom theme first
+  const customTheme = customThemes.find(t => t.name === theme)
+  if (customTheme) {
+    themeStyleEle.innerHTML = patchTheme(customTheme.css)
+  } else {
+    switch (theme) {
+      case 'light':
+        themeStyleEle.innerHTML = patchTheme(light())
+        break
+      case 'dark':
+        themeStyleEle.innerHTML = patchTheme(dark())
+        break
+      case 'material-dark':
+        themeStyleEle.innerHTML = patchTheme(materialDark())
+        break
+      case 'ulysses':
+        themeStyleEle.innerHTML = patchTheme(ulysses())
+        break
+      case 'graphite':
+        themeStyleEle.innerHTML = patchTheme(graphite())
+        break
+      case 'one-dark':
+        themeStyleEle.innerHTML = patchTheme(oneDark())
+        break
+      default:
+        console.warn('unknown theme, falling back to light')
+        themeStyleEle.innerHTML = patchTheme(light())
+        break
+    }
   }
 
   // workaround: use dark icons
@@ -170,7 +177,7 @@ export const addElementStyle = () => {
 
 // Append common sheet and theme at the end of head - order is important.
 export const addStyles = options => {
-  const { theme } = options
-  addThemeStyle(theme)
+  const { theme, customThemes } = options
+  addThemeStyle(theme, customThemes)
   addCommonStyle(options)
 }

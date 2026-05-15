@@ -1,25 +1,20 @@
 import i18n from '@/i18n'
 
-export const themes = [
-  {
-    name: 'light'
-  },
-  {
-    name: 'dark'
-  },
-  {
-    name: 'graphite'
-  },
-  {
-    name: 'material-dark'
-  },
-  {
-    name: 'ulysses'
-  },
-  {
-    name: 'one-dark'
-  }
+const builtInThemes = [
+  { name: 'light' },
+  { name: 'dark' },
+  { name: 'graphite' },
+  { name: 'material-dark' },
+  { name: 'ulysses' },
+  { name: 'one-dark' }
 ]
+
+export const getAllThemes = (customThemes = []) => {
+  const custom = customThemes.map(t => ({ name: t.name, custom: true }))
+  return [...builtInThemes, ...custom]
+}
+
+export { builtInThemes as themes }
 
 export const autoSwitchThemeOptions = [{
   get label () { return i18n.t('prefThemeOptions.autoSwitchAtStartup') },
