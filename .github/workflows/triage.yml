@@ -18,3 +18,4 @@ jobs:
           ai-base-url: 	https://api.deepseek.com/v1
           ai-key: ${{ secrets.OPENAI_API_KEY }}
           labels: bug,enhancement,question
+          model: 'deepseek-flash'
