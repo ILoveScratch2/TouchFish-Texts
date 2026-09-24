@@ -8409,10 +8409,10 @@ karma-sourcemap-loader@^0.3.8:
   dependencies:
     graceful-fs "^4.1.2"
 
-karma-spec-reporter@0.0.34:
-  version "0.0.34"
-  resolved "https://registry.yarnpkg.com/karma-spec-reporter/-/karma-spec-reporter-0.0.34.tgz#7dc79cdc76b0e37f17006921439600ae3c648669"
-  integrity sha512-l5H/Nh9q4g2Ysx2CDU2m+NIPyLQpCVbk9c4V02BTZHw3NM6RO1dq3eRpKXCSSdPt4RGfhHk8jDt3XYkGp+5PWg==
+karma-spec-reporter@0.0.37:
+  version "0.0.37"
+  resolved "https://registry.yarnpkg.com/karma-spec-reporter/-/karma-spec-reporter-0.0.37.tgz#26e827b10fa629b720f451ddf61097912b03b351"
+  integrity sha512-2lGrDzPk3A5n9/Wg3iBApVqiLWqSKHU0xhDrjUiIZWEWjsvHS3XquvN9nT+nPj+G9LJxPSS2nYrrdQehD5wRgg==
   dependencies:
     colors "1.4.0"
 
