@@ -19,3 +19,4 @@ jobs:
           ai-key: ${{ secrets.OPENAI_API_KEY }}
           labels: bug,enhancement,question
           model: 'deepseek-flash'
+          max_tokens: 1000000
