@@ -111,7 +111,7 @@
     "cheerio": "^1.0.0-rc.10",
     "copy-webpack-plugin": "^10.2.4",
     "cross-env": "^7.0.3",
-    "css-loader": "^6.7.1",
+    "css-loader": "^7.0.0",
     "del": "^6.0.0",
     "devtron": "^1.4.0",
     "dotenv": "^16.0.0",
